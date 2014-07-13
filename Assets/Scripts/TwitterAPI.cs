@@ -75,7 +75,7 @@ public class TwitterAPI : MonoBehaviour {
 		
 		SortedDictionary<string, string> twitterParamsDictionary = new SortedDictionary<string, string>
         {
-            {"q", "%23GDC"},
+            {"q", keywords},
 			{"count", "100"},
 			{"result_type", "popular"},
 		};
