@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/OVR/Editor/OVRShimLoader.cs">
+    <Files>
+      <File FileName="Assets/LeapMotion+OVR/Scripts/OVRReset.cs" Line="14" Column="9" />
+      <File FileName="Assets/OVR/Editor/OVRShimLoader.cs" Line="127" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
