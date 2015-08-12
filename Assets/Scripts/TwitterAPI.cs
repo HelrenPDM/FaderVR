@@ -37,7 +37,13 @@ public class TwitterAPI : MonoBehaviour {
 	
 	// Use of MINI JSON http://forum.unity3d.com/threads/35484-MiniJSON-script-for-parsing-JSON-data
 	private List<TwitterData> ParseResultsFromSearchTwitter(string jsonResults) {
+		Debug.Log(jsonResults);
 		List<TwitterData> twitterDataList = new List<TwitterData>();
+
+		foreach (var entry in twitterDataList)
+		{
+			Debug.Log(entry.screenName);
+		}
     	
 		IDictionary search = (IDictionary) Json.Deserialize(jsonResults);
   		IList tweets = (IList) search["statuses"];
@@ -86,7 +92,7 @@ public class TwitterAPI : MonoBehaviour {
 		string authHeaderParam = CreateAuthorizationHeaderParameter(signature, this.oauthTimeStamp);
 		Debug.Log("Auth Header: " + authHeaderParam);
 		
-		Hashtable headers = new Hashtable();
+		Dictionary<string,string> headers = new Dictionary<string,string>();
         headers["Authorization"] = authHeaderParam;
 		
 		string twitterParams = ParamDictionaryToString(twitterParamsDictionary);
@@ -149,7 +155,7 @@ public class TwitterAPI : MonoBehaviour {
         authorizationHeaderParams += "OAuth ";
        
 		authorizationHeaderParams += "oauth_consumer_key="
-                                     + "\"" + Uri.EscapeDataString(this.oauthConsumerKey) + "\", ";
+			+ "\"" + Uri.EscapeDataString(this.oauthConsumerKey) + "\", ";
 		
 		authorizationHeaderParams += "oauth_nonce=" + "\"" +
                                      Uri.EscapeDataString(this.oauthNonce) + "\", ";
