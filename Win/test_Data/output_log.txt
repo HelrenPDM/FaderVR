@@ -1,0 +1,57 @@
+Mono path[0] = 'C:/Users/Stephan/Documents/GitHub/AuthorVR/Win/test_Data/Managed'
+Mono path[1] = 'C:/Users/Stephan/Documents/GitHub/AuthorVR/Win/test_Data/Mono'
+Mono config path = 'C:/Users/Stephan/Documents/GitHub/AuthorVR/Win/test_Data/Mono/etc'
+PlayerConnection initialized from C:/Users/Stephan/Documents/GitHub/AuthorVR/Win/test_Data (debug = 0)
+PlayerConnection initialized network socket : 0.0.0.0 55264
+Multi-casting "[IP] 192.168.0.12 [Port] 55264 [Flags] 2 [Guid] 2513356554 [EditorId] 3051565815 [Version] 1048832 [Id] WindowsPlayer(Athena) [Debug] 0" to [225.0.0.222:54997]...
+PlayerConnection already initialized - listening to [192.168.0.12:55264]
+Initialize engine version: 5.1.2f1 (afd2369b692a)
+[VRDevice] Successfully created device oculus.
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 660   (ID=0x11c0)
+    Vendor:   NVIDIA
+    VRAM:     1988 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\LeapCSharp.NET3.5.dll (this message is harmless)
+Loading C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\LeapCSharp.NET3.5.dll into Unity Child Domain
+- Completed reload, in  0.162 seconds
+desktop: 1920x1080 59Hz; virtual: 3200x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Stephan\Documents\GitHub\AuthorVR\Win\test_Data\Managed\System.dll (this message is harmless)
+[CAPI] LibOVR module is located at C:\WINDOWS\SYSTEM32\LibOVRRT32_0_6.dll
+
+ 
+(Filename: C:/buildslave/unity/build/Runtime/VR/Oculus/VRDeviceOculus.cpp Line: 52)
+
+[Compositor] ERROR: Compositor failed to initialize.
+ 
+(Filename: C:/buildslave/unity/build/Runtime/VR/Oculus/VRDeviceOculus.cpp Line: 54)
+
+Bad config or LibOVR not found. VR disabled.
+ 
+(Filename: C:/buildslave/unity/build/Runtime/VR/Oculus/VRDeviceOculus.cpp Line: 368)
+
+Could not set Oculus caps. VR disabled.
+ 
+(Filename: C:/buildslave/unity/build/Runtime/VR/Oculus/VRDeviceOculus.cpp Line: 940)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 4d4 -> priority: 1 

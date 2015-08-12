@@ -1,10 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../VR_BER/Assets/Scripts/VMEController/Util/VMEObjectAction.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Main.cs">
     <Files>
-      <File FileName="../VR_BER/Assets/Scripts/VMEController/Util/VMECameraRayTracker.cs" Line="199" Column="10" />
-      <File FileName="../VR_BER/Assets/Scripts/VMEController/Util/VMEObjectAction.cs" Line="56" Column="39" />
-      <File FileName="../VR_BER/Assets/Scripts/VMEController/Util/VMEFocusTimer.cs" Line="102" Column="11" />
+      <File FileName="Assets\Scripts\Main.cs" Line="13" Column="3" />
+      <File FileName="Assets\LeapMotion\Widgets\Scripts\DemoScripts\ButtonDemoToggle.cs" Line="1" Column="1" />
+      <File FileName="Assets\LeapMotion\Widgets\Scripts\Button\ButtonToggleBase.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Map2Object.cs" Line="16" Column="13" />
+      <File FileName="Assets\Scripts\TwitterAPI.cs" Line="56" Column="61" />
+      <File FileName="Assets\Scripts\TwitterData.cs" Line="10" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
