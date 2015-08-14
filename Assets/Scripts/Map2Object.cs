@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Map2Object {
 
-	GameObject tweetSphere;
-	GameObject tweetText;
-	float floatAbove;
+	GameObject m_TweetSphere;
+	GameObject m_TweetText;
+	float m_Scale;
 
 	public Map2Object()
 	{
@@ -13,35 +13,27 @@ public class Map2Object {
 
 	public void Tweet2Object(TwitterData tweet, int index)
 	{
-		if (tweet.
-		tweetSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		floatAbove = tweet.retweetCount;
-		tweetSphere.transform.localScale = tweet.retweetCount > 0 ? new Vector3(floatAbove, floatAbove, floatAbove) : new Vector3(0.5f, 0.5f, 0.5f);
+		m_TweetSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		m_Scale = tweet.retweetCount;
+		m_TweetSphere.transform.localScale = tweet.retweetCount > 0 ? new Vector3(m_Scale, m_Scale, m_Scale) : new Vector3(0.5f, 0.5f, 0.5f);
 
-		tweetText = new GameObject("text" + index);
-		tweetText.AddComponent<TextMesh>();
-		tweetText.GetComponent<TextMesh>().text = tweet.tweetText;
-		tweetText.GetComponent<TextMesh>().fontSize = 72;
-		tweetText.GetComponent<TextMesh>().color = Color.red;
-		tweetText.GetComponent<TextMesh>().anchor = TextAnchor.MiddleCenter;
-		tweetText.GetComponent<TextMesh>().alignment = TextAlignment.Center;
-		tweetText.GetComponent<TextMesh>().text = TrimText(tweetText.GetComponent<TextMesh>());
-		tweetText.transform.SetParent (tweetSphere.transform);
-
-		Vector3 relpos = tweetSphere.transform.position;
-		relpos.y += floatAbove + 2;
-		tweetText.transform.position = relpos;
-		if (floatAbove < 3) {
-			tweetText.transform.localScale = new Vector3 (.01f * floatAbove, .01f * floatAbove, .01f * floatAbove);
-		} else {
-			tweetText.transform.localScale = new Vector3 (.01f, .01f, .01f);
-		}
+		m_TweetText = new GameObject("text" + index);
+		m_TweetText.transform.position = m_TweetSphere.transform.position;
+		m_TweetText.AddComponent<TextMesh>();
+		m_TweetText.GetComponent<TextMesh>().text = tweet.tweetText;
+		m_TweetText.GetComponent<TextMesh>().fontSize = 90;
+		m_TweetText.GetComponent<TextMesh>().color = Color.red;
+		m_TweetText.GetComponent<TextMesh>().anchor = TextAnchor.MiddleCenter;
+		m_TweetText.GetComponent<TextMesh>().alignment = TextAlignment.Center;
+		m_TweetText.GetComponent<TextMesh>().text = TrimText(m_TweetText.GetComponent<TextMesh>());
+		m_TweetText.transform.SetParent (m_TweetSphere.transform);
+		m_TweetText.transform.localScale = new Vector3(.025f,.025f,.025f);
 	}
 
 	string TrimText(TextMesh tmesh)
 	{
 		string builder = "";
-		float rowLimit = 1.9f; //find the sweet spot    
+		float rowLimit = 30f; //find the sweet spot    
 		string[] parts = tmesh.text.Split(' ');
 		tmesh.text = "";
 		for (int i = 0; i < parts.Length; i++)
@@ -58,13 +50,14 @@ public class Map2Object {
 
 	public void RingDistribution(int index, int count, Vector3 center)
 	{
-		tweetSphere.transform.position = RandomCircle (index, count, center, 50);
-		//tweetSphere.transform.rotation = Quaternion.FromToRotation (Vector3.forward, center);
+		m_TweetSphere.transform.position = RandomCircle (index, count, center, 30);
+		m_TweetText.transform.rotation = Quaternion.LookRotation(m_TweetText.transform.position - center);
 	}
 
     Vector3 RandomCircle(int index, int count, Vector3 center, float radius)
 	{
-		float ang = Random.value * 360;
+		float ang = (index * (360/count));
+		Debug.Log("Angle of tweet " + index + ": " + ang);
 		Vector3 pos;
 		pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
 		pos.z = center.z + radius * Mathf.Cos(ang * Mathf.Deg2Rad);
