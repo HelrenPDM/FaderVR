@@ -3,14 +3,14 @@ using UnityEngine.UI;
 using System.Collections;
 using LMWidgets;
 
-public class SearchTermDialModel : DataBinderDial {
+public class ChannelDialModel : DataBinderDial {
 
 	override protected void setDataModel(string value) {
-		GetComponent<TwitterMain>().searchTerms = value;
+		GetComponent<ChannelManager>().SetActiveChannel(value);
 	}
 	
 	override public string GetCurrentData() {
-		return GetComponent<TwitterMain>().searchTerms;
+		return GetComponent<ChannelManager>().GetActiveChannel().ToString();
 	}
 }
 

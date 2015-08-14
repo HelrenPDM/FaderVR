@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Map2Object {
+public class Tweet2Sphere {
 
 	GameObject m_TweetSphere;
 	GameObject m_TweetText;
 	float m_Scale;
 
-	public Map2Object()
+	public Tweet2Sphere()
 	{
 	}
 
