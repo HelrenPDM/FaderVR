@@ -9,12 +9,15 @@ public class TwitterMain : MonoBehaviour {
 	public int retweetThreshold = 0;
 	public bool filterRetweets = true;
 
+	private string searchTermsUI;
+
 	List<TwitterData> filteredTweetList = new List<TwitterData>();
 
 	Tweet2Sphere[] mapper;
 
 	// Use this for initialization
 	void Start () {
+		searchTermsUI = GameObject.Find("searchTermsUI").GetComponent<TextMesh>().text;
 		if (filterRetweets)
 		{
 			searchTerms += " -filter:retweets";
@@ -57,5 +60,10 @@ public class TwitterMain : MonoBehaviour {
 		}
 		TwitterAPI.instance.SearchTwitter(searchTerms, ResultsCallBack);
 
+	}
+
+	void UpdateUIText()
+	{
+		searchTermsUI = searchTerms;
 	}
 }

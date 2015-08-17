@@ -81,7 +81,7 @@ namespace LMWidgets {
     }
   }
 
-  	public abstract class DataBinderSlider : DataBinder<SliderBase, float> {};
-  	public abstract class DataBinderToggle : DataBinder<ButtonToggleBase, bool> {};
-  	public abstract class DataBinderDial : DataBinder<DialGraphics, string> {};
+  public abstract class DataBinderSlider : DataBinder<SliderBase, float> {};
+  public abstract class DataBinderToggle : DataBinder<ButtonToggleBase, bool> {};
+  public abstract class DataBinderDial : DataBinder<DialGraphics, string> {};
 }
