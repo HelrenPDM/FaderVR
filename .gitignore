@@ -1,8 +1,0 @@
-Library/ScriptAssemblies
-Library/metadata
-*.log
-*.tmp
-Library/ShaderCache
-Assets/LeapMotion*
-Assets/OVR*
-Win

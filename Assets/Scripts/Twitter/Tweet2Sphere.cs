@@ -36,28 +36,32 @@ public class Tweet2Sphere {
 		float rowLimit = 30f; //find the sweet spot    
 		string[] parts = tmesh.text.Split(' ');
 		tmesh.text = "";
-		for (int i = 0; i < parts.Length; i++)
+		foreach (string part in parts)
 		{
-			tmesh.text += parts[i] + " ";
+			tmesh.text += part + " ";
 			if (tmesh.transform.GetComponent<Renderer>().bounds.extents.x > rowLimit)
 			{
-				tmesh.text = builder.TrimEnd() + System.Environment.NewLine + parts[i] + " ";
+				builder += System.Environment.NewLine + part + " ";
+				tmesh.text = "";
 			}
-			builder = tmesh.text;
+			else
+			{
+				builder += part + " ";
+			}
+			Debug.Log("builder step: " + builder);
 		}
 		return builder;
 	}
 
-	public void RingDistribution(int index, int count, Vector3 center)
+	public void RingDistribution(int index, float step, Vector3 center)
 	{
-		m_TweetSphere.transform.position = RandomCircle (index, count, center, 30);
+		m_TweetSphere.transform.position = RandomCircle (index, step, center, 30);
 		m_TweetText.transform.rotation = Quaternion.LookRotation(m_TweetText.transform.position - center);
 	}
 
-    Vector3 RandomCircle(int index, int count, Vector3 center, float radius)
+    Vector3 RandomCircle(int index, float step, Vector3 center, float radius)
 	{
-		float ang = (index * (360/count));
-		Debug.Log("Angle of tweet " + index + ": " + ang);
+		float ang = (index * step);
 		Vector3 pos;
 		pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
 		pos.z = center.z + radius * Mathf.Cos(ang * Mathf.Deg2Rad);
