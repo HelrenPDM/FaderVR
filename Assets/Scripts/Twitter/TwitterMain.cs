@@ -17,12 +17,7 @@ public class TwitterMain : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		searchTermsUI = GameObject.Find("searchTermsUI").GetComponent<TextMesh>().text;
-		if (filterRetweets)
-		{
-			searchTerms += " -filter:retweets";
-		}
-		TwitterAPI.instance.SearchTwitter(searchTerms, ResultsCallBack);
+		StartSearch ();
 	}
 	
 	// Update is called once per frame
@@ -68,6 +63,6 @@ public class TwitterMain : MonoBehaviour {
 
 	void UpdateUIText()
 	{
-		searchTermsUI = searchTerms;
+		GameObject.Find ("searchTermsUI").GetComponent<TextMesh> ().text = searchTerms;
 	}
 }
