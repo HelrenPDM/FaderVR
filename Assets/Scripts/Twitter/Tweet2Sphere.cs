@@ -48,7 +48,7 @@ public class Tweet2Sphere {
 			{
 				builder += part + " ";
 			}
-			Debug.Log("builder step: " + builder);
+			//Debug.Log("builder step: " + builder);
 		}
 		return builder;
 	}

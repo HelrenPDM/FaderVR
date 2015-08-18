@@ -4,5 +4,6 @@ Library/metadata
 *.tmp
 Library/ShaderCache
 Assets/LeapMotion*
+Assets/Plugins
 Win
 Temp/
