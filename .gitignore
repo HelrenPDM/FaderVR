@@ -4,5 +4,5 @@ Library/metadata
 *.tmp
 Library/ShaderCache
 Assets/LeapMotion*
-Assets/OVR*
 Win
+Temp/
