@@ -27,6 +27,7 @@ public class TwitterMain : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		UpdateUIText ();
 	}
 
 	void ResultsCallBack(List<TwitterData> tweetList) {
@@ -39,6 +40,9 @@ public class TwitterMain : MonoBehaviour {
 			}
 		}
 
+		int count = filteredTweetList.Count;
+		float step = 360f / (float)count;
+
 		mapper = new Tweet2Sphere[filteredTweetList.Count];
 		int i = 0;
 		Debug.Log("Array size: " + mapper.Length);
@@ -47,7 +51,7 @@ public class TwitterMain : MonoBehaviour {
 			Debug.Log("Tweet: " + filteredData.ToString());
 			mapper[i] = new Tweet2Sphere();
 			mapper[i].Tweet2Object(filteredData, i);
-			mapper[i].RingDistribution(i, tweetList.Count, center);
+			mapper[i].RingDistribution(i, step, center);
 			i++;
 		}
 	}
