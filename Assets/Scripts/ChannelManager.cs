@@ -10,9 +10,6 @@ public class ChannelManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		FaderChannel tmpChan = new FaderChannel("Twitter");
-		tmpChan.Active = true;
-		m_faderChannels.Add(tmpChan);
 	}
 	
 	// Update is called once per frame
@@ -32,7 +29,7 @@ public class ChannelManager : MonoBehaviour {
 		}
 		catch (NullReferenceException e)
 		{
-			throw new NullReferenceException();
+			throw new NullReferenceException(e.Message);
 		}
 	}
 
@@ -41,15 +38,27 @@ public class ChannelManager : MonoBehaviour {
 	/// </summary>
 	/// <returns><c>true</c>, if channel exists, <c>false</c> otherwise.</returns>
 	/// <param name="name">Name.</param>
-	public bool FaderChannelExists(string name)
+	public bool FaderChannelExists(FaderChannel chan)
 	{
 		try
 		{
-			return m_faderChannels.Exists(x => x.ChannelName == name);
+			return m_faderChannels.Exists(x => x.ChannelName == chan.ChannelName);
 		}
 		catch (NullReferenceException e)
 		{
-			throw new NullReferenceException();
+			throw new NullReferenceException(e.Message);
+		}
+	}
+
+	/// <summary>
+	/// Adds a fader channel.
+	/// </summary>
+	/// <param name="chan">Chan.</param>
+	public void AddFaderChannel(FaderChannel chan)
+	{
+		if (!FaderChannelExists(chan))
+		{
+			m_faderChannels.Add(chan);
 		}
 	}
 
@@ -66,7 +75,7 @@ public class ChannelManager : MonoBehaviour {
 		}
 		catch (NullReferenceException e)
 		{
-			throw new NullReferenceException();
+			throw new NullReferenceException(e.Message);
 		}
 	}
 
@@ -74,13 +83,13 @@ public class ChannelManager : MonoBehaviour {
 	/// Sets the active channel.
 	/// </summary>
 	/// <param name="name">Name.</param>
-	public void SetActiveChannel(string name)
+	public void SetActiveChannel(FaderChannel chan)
 	{
-		if (m_activeChannel.ChannelName != name && m_faderChannels.Exists(x => x.ChannelName == name))
+		if (m_activeChannel.ChannelName != chan.ChannelName && m_faderChannels.Exists(x => x.ChannelName == chan.ChannelName))
 		{
-			m_activeChannel.Active = false;
-			m_activeChannel = m_faderChannels.Find (x => x.ChannelName == name);
-			m_activeChannel.Active = true;
+			m_activeChannel.m_Active = false;
+			m_activeChannel = m_faderChannels.Find (x => x.ChannelName == chan.ChannelName);
+			m_activeChannel.m_Active = true;
 		}
 	}
 }

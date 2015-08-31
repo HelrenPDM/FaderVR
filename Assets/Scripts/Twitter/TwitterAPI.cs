@@ -63,7 +63,8 @@ public class TwitterAPI : MonoBehaviour {
 	}
 	
 	public void SearchTwitter(string keywords, Action<List<TwitterData> > callback) 
-	{		
+	{
+		Debug.Log ("Run SearchTwitter " + instance.name + " with " + keywords);
 		// Override the nounce and timestamp here if troubleshooting with Twitter's OAuth Tool
 		oauthNonce = Convert.ToBase64String(new ASCIIEncoding().GetBytes(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture)));
 		TimeSpan _timeSpan = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0);		
@@ -74,6 +75,7 @@ public class TwitterAPI : MonoBehaviour {
 	
 	private IEnumerator SearchTwitter_Coroutine(string keywords, Action<List<TwitterData> > callback) 
 	{
+		Debug.Log ("Run SearchTwitter_Coroutine of " + instance.name + " with " + keywords);
 		// Fix up hashes to be webfriendly
 		keywords = Uri.EscapeDataString(keywords);
 
@@ -188,5 +190,10 @@ public class TwitterAPI : MonoBehaviour {
 		
 		string paramString = dictionaryStringBuilder.ToString().Substring(0, dictionaryStringBuilder.Length - 3);
 		return paramString;
+	}
+
+	public void ResetInstance()
+	{
+		instance = null;
 	}
 }

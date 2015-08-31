@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Tweet2Sphere {
 
-	GameObject m_TweetSphere;
-	GameObject m_TweetText;
+	public GameObject m_TweetSphere;
+	public GameObject m_TweetText;
 	float m_Scale;
 
 	public Tweet2Sphere()

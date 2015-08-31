@@ -25,11 +25,12 @@
 // THE SOFTWARE.
 
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Fader channel.
 /// </summary>
-public class FaderChannel
+public class FaderChannel : MonoBehaviour
 {
 	/// <summary>
 	/// Gets or sets the name of the channel.
@@ -45,7 +46,7 @@ public class FaderChannel
 	/// Gets or sets a value indicating whether this <see cref="FaderChannel"/> is active.
 	/// </summary>
 	/// <value><c>true</c> if active; otherwise, <c>false</c>.</value>
-	public bool Active { get; set; }
+	public bool m_Active { get; set; }
 
 	//// <summary>
 	/// Initializes a new instance of the <see cref="FaderChannel"/> class.
@@ -54,6 +55,7 @@ public class FaderChannel
 	{
 		this.ChannelName = "";
 		this.ChannelUri = new Uri("");
+		this.m_Active = false;
 	}
 
 	/// <summary>
@@ -63,6 +65,7 @@ public class FaderChannel
 	public FaderChannel(string name)
 	{
 		this.ChannelName = name;
+		this.m_Active = false;
 	}
 
 	/// <summary>
@@ -74,5 +77,11 @@ public class FaderChannel
 	{
 		this.ChannelName = name;
 		this.ChannelUri = uri;
+		this.m_Active = false;
+	}
+
+	public void ToggleActive()
+	{
+		m_Active = !m_Active;
 	}
 }
