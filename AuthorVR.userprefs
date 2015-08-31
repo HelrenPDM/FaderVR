@@ -1,12 +1,6 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Twitter\TwitterMain.cs">
-    <Files>
-      <File FileName="Assets\Scripts\Twitter\TwitterMain.cs" Line="20" Column="18" />
-      <File FileName="Assets\Scripts\LeapDataBinding\SearchTermDialModel.cs" Line="9" Column="51" />
-      <File FileName="Assets\Scripts\Twitter\Tweet2Sphere.cs" Line="49" Column="27" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

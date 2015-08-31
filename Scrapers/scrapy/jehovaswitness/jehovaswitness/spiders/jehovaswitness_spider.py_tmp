@@ -1,0 +1,57 @@
+import scrapy
+
+from jehovaswitness.items import JehovaswitnessItem
+
+class JehovaswitnessSpider(scrapy.Spider):
+    name = "jehovaswitness"
+    start_urls = [
+            "http://jwsurvey.org/",
+            "http://www.jwfacts.com/",
+            "http://watchtowerdocuments.org/",
+            "http://silentlambs.org/",
+            "http://www.jwlies.com/?gclid=CL6wloPsnscCFYaCfgodCJkEKg",
+            "http://www.4jehovah.org/",
+            "http://www.watchtowernews.org/",
+            "http://ex-jw.com/",
+            "https://www.facebook.com/pages/Ex-Jehovahs-Witnesses-Support/118780261481037",
+            "https://www.reddit.com/r/exjw",
+            "http://ex-jehovahs-witnesses.meetup.com/",
+            "http://exjehovahswitnessforum.yuku.com/",
+            "http://www.watchthetower.net/",
+            "http://www.freeminds.org/",
+            "http://www.jehovahs-witness.com/",
+            "http://www.jehovahswitnessblog.com/jehovahs-witness-websites/",
+            "http://www.jehovahswitnessblog.com/cult/jehovahs-witness-cult/",
+            "http://insidethewatchtower.com/",
+            "http://jehovahswitnessreport.com/",
+            "http://thewatchtowerfiles.com/",
+            "http://watchtowerwatch.com/",
+            "http://www.x-j-w.org/",
+            "http://jwleaks.org/",
+            "http://www.jwgraphs.com/",
+            "http://www.quotes-watchtower.co.uk/",
+            "http://exjwslosangeles.org/",
+            "http://www.exjw-reunited.co.uk/index.htm",
+            "http://www.jwfiles.com/index.htm",
+            "https://www.jehovahswitnessrecovery.com/forum/index.php",
+            "http://jwonline.org/",
+            "http://jehovahswitnessesexperts.com/index.html",
+            "http://jwchildcustody.com/",
+            "http://www.jwreform.org/",
+            "https://www.facebook.com/john.cedars.5",
+            "https://twitter.com/cedarsjwsurvey",
+            "http://xjwsforchrist.forumatic.com/",
+            "http://www.watchtowerandawakening.com/",
+            "http://randallwatters.org/watchtowerworld/",
+            "http://www.jwpodcast.org/jehovahs-witness-websites/",
+            "http://www.jw.org/en/",
+            "http://www.jwstruggle.com/"
+    ]
+
+    def parse(self, response):
+        for sel in response.xpath('/article'):
+            item = JehovaswitnessItem()
+            item['title'] = sel.xpath('header/h2/a/text()').extract()
+            item['link'] = sel.xpath('header/h2/a/@href').extract()
+            item['desc'] = sel.xpath('div/p/text()').extract()
+            yield item
