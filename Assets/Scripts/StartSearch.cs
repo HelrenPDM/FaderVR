@@ -40,6 +40,9 @@ public class StartSearch : MonoBehaviour
 	
 	private void OnSimpleButtonAction (object sender, LMWidgets.EventArg<bool> arg) {
 		Debug.Log(this.transform.name + " pressed.");
-		m_TwitterChannel.StartSearch();
+		if (m_TwitterChannel.Active)
+		{
+			m_TwitterChannel.StartSearch();
+		}
 	}
 }

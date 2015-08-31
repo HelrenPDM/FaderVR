@@ -123,6 +123,7 @@
      <Compile Include="Assets\Scripts\FaderChannel.cs" />
      <Compile Include="Assets\Scripts\LeapDataBinding\ChannelDialModel.cs" />
      <Compile Include="Assets\Scripts\LeapDataBinding\SearchTermDialModel.cs" />
+     <Compile Include="Assets\Scripts\LeapDataBinding\SliderRetweetThreshold.cs" />
      <Compile Include="Assets\Scripts\StartSearch.cs" />
      <Compile Include="Assets\Scripts\Twitter\MiniJSON.cs" />
      <Compile Include="Assets\Scripts\Twitter\Tweet2Sphere.cs" />
@@ -130,6 +131,7 @@
      <Compile Include="Assets\Scripts\Twitter\TwitterChannel.cs" />
      <Compile Include="Assets\Scripts\Twitter\TwitterData.cs" />
      <Compile Include="Assets\Scripts\Twitter\TwitterToggleButton.cs" />
+     <Compile Include="Assets\SliderRTFilter.cs" />
      <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\LeapMotion\Materials\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\LeapMotion\Resources\LeapCG.cginc" />

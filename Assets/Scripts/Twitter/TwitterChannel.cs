@@ -13,7 +13,8 @@ public class TwitterChannel : MonoBehaviour {
 	/// <value><c>true</c> if active; otherwise, <c>false</c>.</value>
 	public bool Active {get;set;}
 
-	private string searchTermsUI;
+	TextMesh m_STUI;
+	TextMesh m_RTTUI;
 
 	List<TwitterData> filteredTweetList = new List<TwitterData>();
 
@@ -21,6 +22,8 @@ public class TwitterChannel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		m_STUI = GameObject.Find ("searchTermsUI").GetComponent<TextMesh> ();
+		m_RTTUI = GameObject.Find ("RTThresholdCount").GetComponent<TextMesh> ();
 	}
 	
 	// Update is called once per frame
@@ -83,6 +86,7 @@ public class TwitterChannel : MonoBehaviour {
 
 	void UpdateUIText()
 	{
-		GameObject.Find ("searchTermsUI").GetComponent<TextMesh> ().text = searchTerms;
+		m_STUI.text = searchTerms;
+		m_RTTUI.text = retweetThreshold.ToString();
 	}
 }

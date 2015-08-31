@@ -1,21 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/LeapMotion/Widgets/Scripts/ButtonDemoExample/ButtonDemo.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/LeapMotion/Widgets/Scripts/Slider/SliderBase.cs">
     <Files>
       <File FileName="Assets/Scripts/LeapDataBinding/ChannelDialModel.cs" Line="13" Column="28" />
-      <File FileName="Assets/Scripts/Twitter/TwitterChannel.cs" Line="78" Column="4" />
-      <File FileName="Assets/Scripts/FaderChannel.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ChannelManager.cs" Line="78" Column="46" />
-      <File FileName="Assets/Scripts/Twitter/TwitterAPI.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Twitter/TwitterData.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Twitter/Tweet2Sphere.cs" Line="7" Column="9" />
-      <File FileName="Assets/Scripts/Twitter/MiniJSON.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Twitter/TwitterToggleButton.cs" Line="17" Column="48" />
-      <File FileName="Assets/LeapMotion/Widgets/Scripts/Dial/DialGraphics.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/LeapDataBinding/SearchTermDialModel.cs" Line="15" Column="2" />
-      <File FileName="Assets/Scripts/StartSearch.cs" Line="32" Column="32" />
+      <File FileName="Assets/Scripts/Twitter/TwitterChannel.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Twitter/Tweet2Sphere.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/StartSearch.cs" Line="32" Column="19" />
       <File FileName="Assets/LeapMotion/Widgets/Scripts/ButtonDemoExample/ButtonDemo.cs" Line="1" Column="1" />
-      <File FileName="Assets/LeapMotion/Widgets/Scripts/Interfaces/DataBinder.cs" Line="49" Column="1" />
+      <File FileName="Assets/LeapMotion/Widgets/Scripts/Interfaces/DataBinder.cs" Line="1" Column="1" />
+      <File FileName="Assets/LeapMotion/Widgets/Scripts/Button/ButtonBase.cs" Line="27" Column="3" />
+      <File FileName="Assets/LeapMotion/Widgets/Scripts/Slider/SliderBase.cs" Line="9" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
