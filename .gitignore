@@ -5,8 +5,11 @@ Library
 *.unityproj
 *.log
 *.tmp
-Assets/LeapMotion
-Assets/Plugins
+Assets/LeapMotion*
+Assets/Plugins*
+Assets/OVR*
+Assets/Gizmos*
+Assets/Standard\ Assets*
 Win
-Temp/
+Temp
 

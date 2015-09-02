@@ -1,10 +1,3 @@
-fileFormatVersion: 2
-<<<<<<< HEAD
-guid: 4ffbb9dd5d8954e7db7695bdfe7721e1
-folderAsset: yes
-DefaultImporter:
-  userData: 
-=======
 guid: de95805faebcb4db89b71427aea637be
 folderAsset: yes
 timeCreated: 1435237778
@@ -12,5 +5,4 @@ licenseType: Free
 DefaultImporter:
   userData: 
   assetBundleName: 
-  assetBundleVariant: 
->>>>>>> AuthorVR/master
+  assetBundleVariant:
