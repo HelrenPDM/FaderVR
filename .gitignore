@@ -1,17 +1,12 @@
-<<<<<<< HEAD
 Library
-Assembly-CSharp.pidb
-UnityTwitter.userprefs
-Assembly-CSharp-vs.csproj
-Assembly-CSharp.csproj
-=======
-Library/ScriptAssemblies
-Library/metadata
+*.pidb
+*.userprefs
+*.csproj
+*.unityproj
 *.log
 *.tmp
-Library/ShaderCache
-Assets/LeapMotion*
+Assets/LeapMotion
 Assets/Plugins
 Win
 Temp/
->>>>>>> AuthorVR/master
+
