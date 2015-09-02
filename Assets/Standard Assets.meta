@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 3ba7be77bdb7849e19f4753f87e86446
 folderAsset: yes
 timeCreated: 1439387146
+=======
+guid: 4f331d1041e0141318daecc61ea3db0e
+folderAsset: yes
+timeCreated: 1435238803
+>>>>>>> AuthorVR/master
 licenseType: Free
 DefaultImporter:
   userData: 
