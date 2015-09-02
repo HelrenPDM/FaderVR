@@ -24,6 +24,9 @@ public class TwitterChannel : MonoBehaviour {
 	void Start () {
 		m_STUI = GameObject.Find ("searchTermsUI").GetComponent<TextMesh> ();
 		m_RTTUI = GameObject.Find ("RTThresholdCount").GetComponent<TextMesh> ();
+		#if UNITY_STANDALONE_OSX
+		StartSearch();
+		#endif
 	}
 	
 	// Update is called once per frame
