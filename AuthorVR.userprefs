@@ -1,15 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/LeapMotion/Widgets/Scripts/Slider/SliderBase.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Twitter/TwitterChannel.cs">
     <Files>
-      <File FileName="Assets/Scripts/LeapDataBinding/ChannelDialModel.cs" Line="13" Column="28" />
-      <File FileName="Assets/Scripts/Twitter/TwitterChannel.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Twitter/TwitterChannel.cs" Line="90" Column="45" />
       <File FileName="Assets/Scripts/Twitter/Tweet2Sphere.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/StartSearch.cs" Line="32" Column="19" />
-      <File FileName="Assets/LeapMotion/Widgets/Scripts/ButtonDemoExample/ButtonDemo.cs" Line="1" Column="1" />
-      <File FileName="Assets/LeapMotion/Widgets/Scripts/Interfaces/DataBinder.cs" Line="1" Column="1" />
-      <File FileName="Assets/LeapMotion/Widgets/Scripts/Button/ButtonBase.cs" Line="27" Column="3" />
-      <File FileName="Assets/LeapMotion/Widgets/Scripts/Slider/SliderBase.cs" Line="9" Column="22" />
+      <File FileName="Assets/Scripts/LeapDataBinding/SliderRetweetThreshold.cs" Line="9" Column="66" />
+      <File FileName="Assets/Scripts/Twitter/TwitterAPI.cs" Line="17" Column="2" />
+      <File FileName="Assets/LeapMotion/Widgets/Scripts/Interfaces/DataBinder.cs" Line="55" Column="13" />
+      <File FileName="Assets/Scripts/LeapDataBinding/SearchTermDialModel.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
