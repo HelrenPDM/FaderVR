@@ -1,5 +1,12 @@
 Library
-Assembly-CSharp.pidb
-UnityTwitter.userprefs
-Assembly-CSharp-vs.csproj
-Assembly-CSharp.csproj
+*.pidb
+*.userprefs
+*.csproj
+*.unityproj
+*.log
+*.tmp
+Assets/LeapMotion
+Assets/Plugins
+Win
+Temp/
+
