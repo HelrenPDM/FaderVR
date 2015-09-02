@@ -1,3 +1,5 @@
+FaderVR is a dashboard developed for virtual reality that will empower journalists and the public to track Internet shaming and empathy. Fader will provide users with the ability to set filters for key search, social and community data related to journalism and public discourse. It will enable the mapping of digital diasporas that evolve from memes and identify key influencers and opportunities for sentiment and trend analysis.
+
 Partials of this code are taken from https://bitbucket.org/gambitforhire/twitter-search-with-unity
 
 THE CODE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
