@@ -18,7 +18,7 @@ public class TwitterChannel : MonoBehaviour {
 
 	List<TwitterData> filteredTweetList = new List<TwitterData>();
 
-	Tweet2Sphere[] mapper;
+	FaderTweet[] mapper;
 
 	// Use this for initialization
 	void Start () {
@@ -48,14 +48,14 @@ public class TwitterChannel : MonoBehaviour {
 		float step = 360f / (float)count;
 
 		filteredTweetList.TrimExcess();
-		mapper = new Tweet2Sphere[filteredTweetList.Count];
+		mapper = new FaderTweet[filteredTweetList.Count];
 		int i = 0;
 		Debug.Log("Array size: " + mapper.Length);
 		foreach(TwitterData filteredData in filteredTweetList)
 		{
 			Debug.Log("Tweet: " + filteredData.ToString());
-			mapper[i] = new Tweet2Sphere();
-			mapper[i].Tweet2Object(filteredData, i);
+			mapper[i] = new FaderTweet();
+			mapper[i].CreateSphere(filteredData, i);
 			mapper[i].RingDistribution(i, step, center);
 			i++;
 		}
@@ -69,8 +69,8 @@ public class TwitterChannel : MonoBehaviour {
 			{
 				foreach (var tweet in mapper)
 				{
-					DestroyImmediate(tweet.m_TweetSphere);
-					DestroyImmediate(tweet.m_TweetText);
+					DestroyImmediate(tweet.TweetSphere);
+					DestroyImmediate(tweet.TweetText);
 				}
 				filteredTweetList.Clear();
 			}
@@ -85,6 +85,22 @@ public class TwitterChannel : MonoBehaviour {
 		{
 			TwitterAPI.instance.SearchTwitter(searchTerms, ResultsCallBack);
 		}
+	}
+
+	public void RingDistribution(int index, float step, Vector3 center)
+	{
+		TweetSphere.transform.position = RandomCircle (index, step, center, 30);
+		TweetText.transform.rotation = Quaternion.LookRotation(TweetText.transform.position - center);
+	}
+	
+	Vector3 RandomCircle(int index, float step, Vector3 center, float radius)
+	{
+		float ang = (index * step);
+		Vector3 pos;
+		pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
+		pos.z = center.z + radius * Mathf.Cos(ang * Mathf.Deg2Rad);
+		pos.y = center.y;
+		return pos;
 	}
 
 	void UpdateUIText()

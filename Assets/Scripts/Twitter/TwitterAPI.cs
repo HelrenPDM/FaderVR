@@ -50,7 +50,8 @@ public class TwitterAPI : MonoBehaviour {
 		foreach (IDictionary tweet in tweets) {
 			IDictionary userInfo = tweet["user"] as IDictionary;			
 			
-			TwitterData twitterData = new TwitterData();			
+			TwitterData twitterData = new TwitterData();	
+			twitterData.tweetID = (Int64)tweet["id"];
 			twitterData.tweetText = tweet["text"] as string;
 			twitterData.screenName = userInfo["screen_name"] as string;
 			twitterData.retweetCount = (Int64)tweet["retweet_count"];
