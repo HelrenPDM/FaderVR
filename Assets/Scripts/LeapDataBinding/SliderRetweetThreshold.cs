@@ -3,13 +3,20 @@ using System;
 using System.Collections;
 using LMWidgets;
 
-public class SliderRetweetThreshold : DataBinderSlider
+namespace Fader
 {
-	override protected void setDataModel(float value) {
-		GetComponent<TwitterChannel>().retweetThreshold = (Int32)value;
-	}
-	
-	override public float GetCurrentData() {
-		return Convert.ToSingle(GetComponent<TwitterChannel>().retweetThreshold);
-	}
+    public class SliderRetweetThreshold : DataBinderSlider
+    {
+        public FaderChannel<TwitterChannelBase> m_TwitterChannel;
+
+        override protected void setDataModel(float value)
+        {
+
+        }
+
+        override public float GetCurrentData()
+        {
+            return Convert.ToSingle(m_TwitterChannel.GetCurrentData().RetweetThreshold);
+        }
+    }
 }

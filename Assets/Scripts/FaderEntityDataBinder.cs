@@ -97,5 +97,5 @@ namespace Fader {
 		}
 	}
 
-	public abstract class FaderEntityDataBinderTwitter : FaderEntityDataBinder<TwitterData> {};
+	public abstract class FaderEntityDataBinderTwitter : FaderEntityDataBinder<TwitterBase> {};
 }

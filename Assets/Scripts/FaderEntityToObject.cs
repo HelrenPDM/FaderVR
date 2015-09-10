@@ -29,9 +29,9 @@ using System.Collections;
 
 namespace Fader {
 
-	public abstract class FaderEntityToObject<PayloadType> : MonoBehaviour {
+	public class FaderEntityToObject<PayloadType> : MonoBehaviour {
 
-		public FaderEntityDataBinder<PayloadType> m_FaderEntity;
+		public PayloadType m_FaderEntity;
 
 		public GameObject m_FaderObject;
 		public Renderer m_Rend;
@@ -53,7 +53,7 @@ namespace Fader {
 		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
 		/// </summary>
 		/// <param name="data">Data.</param>
-		public FaderEntityToObject(FaderEntityDataBinder<PayloadType> data)
+		public FaderEntityToObject(PayloadType data)
 		{
 			m_FaderObject = new GameObject();
 			m_Rend = new Renderer();
@@ -65,7 +65,7 @@ namespace Fader {
 		/// </summary>
 		/// <param name="data">Data.</param>
 		/// <param name="primType">Prim type.</param>
-		public FaderEntityToObject(FaderEntityDataBinder<PayloadType> data, PrimitiveType primType)
+		public FaderEntityToObject(PayloadType data, PrimitiveType primType)
 		{
 			m_FaderObject = new GameObject();
 			m_Rend = new Renderer();
@@ -171,7 +171,5 @@ namespace Fader {
 			}
 			return builder;
 		}
-
-		public abstract class FaderEntityToObjectTwitter : FaderEntityToObject<TwitterData> {};
 	}
 }

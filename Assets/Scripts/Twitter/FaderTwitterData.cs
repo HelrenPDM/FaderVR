@@ -1,10 +1,10 @@
 //
-// TwitterData.cs
+// FaderEntityTwitter.cs
 //
 // Author:
 //       Stephan Gensch <stgensch@vragments.com>
 //
-// Copyright (c) 2015 Stephan Gensch
+// Copyright (c) 2015 Stephan
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,48 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Collections;
-using UnityEngine;
+
+
 using System;
 
-public class TwitterData {
-	public string tweetText = "";
-	public string screenName = "";
-	public string profileImageUrl = "";
-	public Int64 retweetCount = 0;
-	public Int64 tweetID = 0;
-	
-	public override string ToString(){
-		return screenName + " posted: \"" + tweetText + "\" and retweeted " + retweetCount.ToString() + " times. Profile image URL: " +  profileImageUrl;
-	}
+namespace Fader
+{
+    public class FaderTwitterData : FaderData<TwitterBase>
+    {
+        private TwitterBase m_Data;
+
+        public override TwitterBase GetData()
+        {
+            return m_Data;
+        }
+
+        public override string GetItemAuthor()
+        {
+            return m_Data.ScreenName;
+        }
+
+        public override DateTime GetItemDateTime()
+        {
+            return m_Data.CreationDate;
+        }
+
+        public override string GetItemID()
+        {
+            return m_Data.TweetID.ToString();
+        }
+
+        public override string GetItemText()
+        {
+            return m_Data.TweetText;
+        }
+
+        protected override void setDataModel(TwitterBase value)
+        {
+            if (value != null)
+            {
+                m_Data = value;
+            }
+        }
+    }
 }
+

@@ -41,8 +41,23 @@ namespace Fader {
 		/// </summary>
 		private ChannelType m_ChannelTypeValue;
 
-		// Fires when the data is updated with the most recent data as the payload
-		public event EventHandler<FaderEventArg<ChannelType>> DataChangedHandler;
+        private bool m_Active;
+
+        public bool Active
+        {
+            get
+            {
+                return m_Active;
+            }
+
+            set
+            {
+                m_Active = value;
+            }
+        }
+
+        // Fires when the data is updated with the most recent data as the payload
+        public event EventHandler<FaderEventArg<ChannelType>> DataChangedHandler;
 		
 		/// <summary>
 		/// Returns the current system value of the data.

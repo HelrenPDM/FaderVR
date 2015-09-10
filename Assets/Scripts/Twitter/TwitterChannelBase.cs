@@ -60,7 +60,12 @@ namespace Fader {
 		/// <summary>
 		/// The m_ search results.
 		/// </summary>
-		public List<List<TwitterData>> m_SearchResults;
+		public List<List<TwitterBase>> m_SearchResults;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int RetweetThreshold { get; set; }
 
 		/// Gets or sets a value indicating whether this <see cref="FaderChannel"/> is active.
 		/// </summary>
@@ -69,7 +74,7 @@ namespace Fader {
 
 		// Use this for initialization
 		void Start () {
-
+            RetweetThreshold = 0;
 		}
 	
 		// Update is called once per frame
@@ -77,67 +82,40 @@ namespace Fader {
 
 		}
 
-		abstract void ResultsCallBack(List<TwitterData> tweetList) {
-			Debug.Log("====================================================");
+        void ResultsCallBack(List<TwitterBase> tweetList) {
 
+            m_SearchResults.Add(tweetList);
+        }
 
-			Vector3 center = GameObject.Find ("rink").transform.position;
-			foreach(TwitterData twitterData in tweetList) {
-				if (twitterData.retweetCount >= retweetThreshold) {
-					filteredTweetList.Add(twitterData);
-				}
-			}
-
-			int count = filteredTweetList.Count;
-			float step = 360f / (float)count;
-	
-			filteredTweetList.TrimExcess();
-			mapper = new FaderTweet[filteredTweetList.Count];
-			int i = 0;
-			Debug.Log("Array size: " + mapper.Length);
-			foreach(TwitterData filteredData in filteredTweetList)
-			{
-				Debug.Log("Tweet: " + filteredData.ToString());
-				mapper[i] = new FaderTweet();
-				mapper[i].CreateSphere(filteredData, i);
-				mapper[i].RingDistribution(i, step, center);
-				i++;
-			}
-		}
-
-		public abstract void StartSimpleSearch(string searchTerm)
+		public void StartSimpleSearch(string searchTerm, bool filterRetweets)
 		{
-			if (mapper != null)
-			{
-				if (mapper.Length > 0)
-				{
-					foreach (var tweet in mapper)
-					{
-						DestroyImmediate(tweet.TweetSphere);
-						DestroyImmediate(tweet.TweetText);
-					}
-					filteredTweetList.Clear();
-				}
-			}
-	
 			if (filterRetweets)
 			{
-				string tmp = searchTerms + " -filter:retweets";
+				string tmp = searchTerm + " -filter:retweets";
 				TwitterAPI.instance.SearchTwitter(tmp, ResultsCallBack);
 			}
 			else
 			{
-				TwitterAPI.instance.SearchTwitter(searchTerms, ResultsCallBack);
+				TwitterAPI.instance.SearchTwitter(searchTerm, ResultsCallBack);
 			}
 		}
 	
-		public void RingDistribution(int index, float step, Vector3 center)
+		public void RingDistribution(List<TwitterBase> tweetList, Vector3 center, float radius)
 		{
-			TweetSphere.transform.position = RandomCircle (index, step, center, 30);
-			TweetText.transform.rotation = Quaternion.LookRotation(TweetText.transform.position - center);
+            List<FaderEntityToObject<TwitterBase>> tmpObjectList = new List<FaderEntityToObject<TwitterBase>>();
+
+            float step = 360f / (tweetList.Count < 1 ? 1 : tweetList.Count);
+
+            foreach (TwitterBase item in tweetList)
+            {
+                FaderEntityToObject<TwitterBase> tmp = new FaderEntityToObject<TwitterBase>(item, PrimitiveType.Sphere);
+                tmp.PositionObject(RandomCircle(tweetList.FindIndex(x => x.TweetID == item.TweetID), step, center, radius));
+                tmp.transform.rotation = Quaternion.LookRotation(tmp.transform.position - center);
+                tmpObjectList.Add(tmp);
+            }
 		}
 		
-		Vector3 RandomCircle(int index, float step, Vector3 center, float radius)
+		private Vector3 RandomCircle(int index, float step, Vector3 center, float radius)
 		{
 			float ang = (index * step);
 			Vector3 pos;

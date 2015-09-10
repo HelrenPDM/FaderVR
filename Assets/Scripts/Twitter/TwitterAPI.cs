@@ -9,114 +9,124 @@ using System.Collections;
 
 using MiniJSON;
 
-public class TwitterAPI : MonoBehaviour {	
-	public string oauthConsumerKey = "";
-	public string oauthConsumerSecret = "";
-	public string oauthToken = "";
-	public string oauthTokenSecret = "";
-	
-	private string oauthNonce = "";
-	private string oauthTimeStamp = "";
-	
-	public static TwitterAPI instance = null;
-	
-	// Use this for initialization
-	void Awake () {
-		if (instance == null) {
-			instance = this;
-		}
-		else {
-			Debug.LogError("More then one instance of TwitterAPI: " + this.transform.name);
-		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
-	// Use of MINI JSON http://forum.unity3d.com/threads/35484-MiniJSON-script-for-parsing-JSON-data
-	private List<TwitterData> ParseResultsFromSearchTwitter(string jsonResults) {
-		Debug.Log(jsonResults);
-		List<TwitterData> twitterDataList = new List<TwitterData>();
+namespace Fader
+{
+    public class TwitterAPI : MonoBehaviour
+    {
+        public string oauthConsumerKey = "";
+        public string oauthConsumerSecret = "";
+        public string oauthToken = "";
+        public string oauthTokenSecret = "";
 
-		foreach (var entry in twitterDataList)
-		{
-			Debug.Log(entry.screenName);
-		}
-    	
-		IDictionary search = (IDictionary) Json.Deserialize(jsonResults);
-  		IList tweets = (IList) search["statuses"];
-		foreach (IDictionary tweet in tweets) {
-			IDictionary userInfo = tweet["user"] as IDictionary;			
-			
-			TwitterData twitterData = new TwitterData();	
-			twitterData.tweetID = (Int64)tweet["id"];
-			twitterData.tweetText = tweet["text"] as string;
-			twitterData.screenName = userInfo["screen_name"] as string;
-			twitterData.retweetCount = (Int64)tweet["retweet_count"];
-			twitterData.profileImageUrl = userInfo["profile_image_url"] as string;
-			
-			twitterDataList.Add(twitterData);
-		} 
-		
-		return twitterDataList;
-	}
-	
-	public void SearchTwitter(string keywords, Action<List<TwitterData> > callback) 
-	{
-		Debug.Log ("Run SearchTwitter " + instance.name + " with " + keywords);
-		// Override the nounce and timestamp here if troubleshooting with Twitter's OAuth Tool
-		oauthNonce = Convert.ToBase64String(new ASCIIEncoding().GetBytes(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture)));
-		TimeSpan _timeSpan = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0);		
-		oauthTimeStamp = Convert.ToInt64(_timeSpan.TotalSeconds).ToString(CultureInfo.InvariantCulture);	
-		
-		StartCoroutine(SearchTwitter_Coroutine(keywords, callback));
-	}
-	
-	private IEnumerator SearchTwitter_Coroutine(string keywords, Action<List<TwitterData> > callback) 
-	{
-		Debug.Log ("Run SearchTwitter_Coroutine of " + instance.name + " with " + keywords);
-		// Fix up hashes to be webfriendly
-		keywords = Uri.EscapeDataString(keywords);
+        private string oauthNonce = "";
+        private string oauthTimeStamp = "";
 
-		string twitterUrl = "https://api.twitter.com/1.1/search/tweets.json";
-		
-		SortedDictionary<string, string> twitterParamsDictionary = new SortedDictionary<string, string>
+        public static TwitterAPI instance = null;
+
+        // Use this for initialization
+        void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Debug.LogError("More then one instance of TwitterAPI: " + this.transform.name);
+            }
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        // Use of MINI JSON http://forum.unity3d.com/threads/35484-MiniJSON-script-for-parsing-JSON-data
+        private List<TwitterBase> ParseResultsFromSearchTwitter(string jsonResults)
+        {
+            Debug.Log(jsonResults);
+            List<TwitterBase> twitterDataList = new List<TwitterBase>();
+
+            foreach (var entry in twitterDataList)
+            {
+                Debug.Log(entry.ScreenName);
+            }
+
+            IDictionary search = (IDictionary)Json.Deserialize(jsonResults);
+            IList tweets = (IList)search["statuses"];
+            foreach (IDictionary tweet in tweets)
+            {
+                IDictionary userInfo = tweet["user"] as IDictionary;
+
+                TwitterBase twitterbase = new TwitterBase();
+                twitterbase.TweetID = (Int64)tweet["id"];
+                twitterbase.ScreenName = userInfo["screen_name"] as string;
+                twitterbase.CreationDate = DateTime.Parse(tweet["created_at"] as string);
+                twitterbase.TweetText = tweet["text"] as string;
+                twitterbase.RetweetCount = (Int64)tweet["retweet_count"];
+                twitterbase.ProfileImageUrl = userInfo["profile_image_url"] as string;
+
+                twitterDataList.Add(twitterbase);
+            }
+
+            return twitterDataList;
+        }
+
+        public void SearchTwitter(string keywords, Action<List<TwitterBase>> callback)
+        {
+            Debug.Log("Run SearchTwitter " + instance.name + " with " + keywords);
+            // Override the nounce and timestamp here if troubleshooting with Twitter's OAuth Tool
+            oauthNonce = Convert.ToBase64String(new ASCIIEncoding().GetBytes(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture)));
+            TimeSpan _timeSpan = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0);
+            oauthTimeStamp = Convert.ToInt64(_timeSpan.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+
+            StartCoroutine(SearchTwitter_Coroutine(keywords, callback));
+        }
+
+        private IEnumerator SearchTwitter_Coroutine(string keywords, Action<List<TwitterBase>> callback)
+        {
+            Debug.Log("Run SearchTwitter_Coroutine of " + instance.name + " with " + keywords);
+            // Fix up hashes to be webfriendly
+            keywords = Uri.EscapeDataString(keywords);
+
+            string twitterUrl = "https://api.twitter.com/1.1/search/tweets.json";
+
+            SortedDictionary<string, string> twitterParamsDictionary = new SortedDictionary<string, string>
         {
             {"q", keywords},
-			{"count", "100"},
-			{"result_type", "popular"},
-		};
-		
-		string signature = CreateSignature(twitterUrl, twitterParamsDictionary);
-		Debug.Log("OAuth Signature: " + signature);
+            {"count", "100"},
+            {"result_type", "popular"},
+        };
 
-		string authHeaderParam = CreateAuthorizationHeaderParameter(signature, this.oauthTimeStamp);
-		Debug.Log("Auth Header: " + authHeaderParam);
-		
-		Dictionary<string,string> headers = new Dictionary<string,string>();
-        headers["Authorization"] = authHeaderParam;
-		
-		string twitterParams = ParamDictionaryToString(twitterParamsDictionary);
-		
-		WWW query = new WWW(twitterUrl + "?" + twitterParams, null, headers);		
-		yield return query;
-		
-		callback(ParseResultsFromSearchTwitter(query.text));
-	}
-		
-	// Taken from http://www.i-avington.com/Posts/Post/making-a-twitter-oauth-api-call-using-c
-	private string CreateSignature(string url, SortedDictionary<string, string> searchParamsDictionary)
-    {
-        //string builder will be used to append all the key value pairs
-        StringBuilder signatureBaseStringBuilder = new StringBuilder();
-        signatureBaseStringBuilder.Append("GET&");
-        signatureBaseStringBuilder.Append(Uri.EscapeDataString(url));
-        signatureBaseStringBuilder.Append("&");
+            string signature = CreateSignature(twitterUrl, twitterParamsDictionary);
+            Debug.Log("OAuth Signature: " + signature);
 
-        //the key value pairs have to be sorted by encoded key
-        SortedDictionary<string, string> urlParamsDictionary = new SortedDictionary<string, string>
+            string authHeaderParam = CreateAuthorizationHeaderParameter(signature, this.oauthTimeStamp);
+            Debug.Log("Auth Header: " + authHeaderParam);
+
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers["Authorization"] = authHeaderParam;
+
+            string twitterParams = ParamDictionaryToString(twitterParamsDictionary);
+
+            WWW query = new WWW(twitterUrl + "?" + twitterParams, null, headers);
+            yield return query;
+
+            callback(ParseResultsFromSearchTwitter(query.text));
+        }
+
+        // Taken from http://www.i-avington.com/Posts/Post/making-a-twitter-oauth-api-call-using-c
+        private string CreateSignature(string url, SortedDictionary<string, string> searchParamsDictionary)
+        {
+            //string builder will be used to append all the key value pairs
+            StringBuilder signatureBaseStringBuilder = new StringBuilder();
+            signatureBaseStringBuilder.Append("GET&");
+            signatureBaseStringBuilder.Append(Uri.EscapeDataString(url));
+            signatureBaseStringBuilder.Append("&");
+
+            //the key value pairs have to be sorted by encoded key
+            SortedDictionary<string, string> urlParamsDictionary = new SortedDictionary<string, string>
                              {
                                  {"oauth_version", "1.0"},
                                  {"oauth_consumer_key", this.oauthConsumerKey},
@@ -125,76 +135,80 @@ public class TwitterAPI : MonoBehaviour {
                                  {"oauth_timestamp", this.oauthTimeStamp},
                                  {"oauth_token", this.oauthToken}
                              };
-        
-		foreach (KeyValuePair<string, string> keyValuePair in searchParamsDictionary)
-        {
-			urlParamsDictionary.Add(keyValuePair.Key, keyValuePair.Value);
-		}    
-		
-		signatureBaseStringBuilder.Append(Uri.EscapeDataString(ParamDictionaryToString(urlParamsDictionary)));
-       	string signatureBaseString = signatureBaseStringBuilder.ToString();
 
-		Debug.Log("Signature Base String: " + signatureBaseString);
-		
-        //generation the signature key the hash will use
-        string signatureKey =
-            Uri.EscapeDataString(this.oauthConsumerSecret) + "&" +
-            Uri.EscapeDataString(this.oauthTokenSecret);
+            foreach (KeyValuePair<string, string> keyValuePair in searchParamsDictionary)
+            {
+                urlParamsDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+            }
 
-        HMACSHA1 hmacsha1 = new HMACSHA1(
-            new ASCIIEncoding().GetBytes(signatureKey));
+            signatureBaseStringBuilder.Append(Uri.EscapeDataString(ParamDictionaryToString(urlParamsDictionary)));
+            string signatureBaseString = signatureBaseStringBuilder.ToString();
 
-        //hash the values
-        string signatureString = Convert.ToBase64String(
-            hmacsha1.ComputeHash(
-                new ASCIIEncoding().GetBytes(signatureBaseString)));
-		
-        return signatureString;
-    }
-	
-	private string CreateAuthorizationHeaderParameter(string signature, string timeStamp)
-    {
-        string authorizationHeaderParams = String.Empty;
-        authorizationHeaderParams += "OAuth ";
-       
-		authorizationHeaderParams += "oauth_consumer_key="
-			+ "\"" + Uri.EscapeDataString(this.oauthConsumerKey) + "\", ";
-		
-		authorizationHeaderParams += "oauth_nonce=" + "\"" +
-                                     Uri.EscapeDataString(this.oauthNonce) + "\", ";
-		
-		authorizationHeaderParams += "oauth_signature=" + "\""
-                                     + Uri.EscapeDataString(signature) + "\", ";
-       
-		authorizationHeaderParams += "oauth_signature_method=" + "\"" +
-            Uri.EscapeDataString("HMAC-SHA1") +
-            "\", ";
+            Debug.Log("Signature Base String: " + signatureBaseString);
 
-        authorizationHeaderParams += "oauth_timestamp=" + "\"" +
-                                     Uri.EscapeDataString(timeStamp) + "\", ";        
+            //generation the signature key the hash will use
+            string signatureKey =
+                Uri.EscapeDataString(this.oauthConsumerSecret) + "&" +
+                Uri.EscapeDataString(this.oauthTokenSecret);
 
-        authorizationHeaderParams += "oauth_token=" + "\"" +
-                                     Uri.EscapeDataString(this.oauthToken) + "\", ";
+            HMACSHA1 hmacsha1 = new HMACSHA1(
+                new ASCIIEncoding().GetBytes(signatureKey));
 
-        authorizationHeaderParams += "oauth_version=" + "\"" +
-                                     Uri.EscapeDataString("1.0") + "\"";
-        return authorizationHeaderParams;
-    }
-	
-	private string ParamDictionaryToString(IDictionary<string, string> paramsDictionary) {
-		StringBuilder dictionaryStringBuilder = new StringBuilder();       
-		foreach (KeyValuePair<string, string> keyValuePair in paramsDictionary)
-        {
-            //append a = between the key and the value and a & after the value
-            dictionaryStringBuilder.Append(string.Format("{0}={1}&", keyValuePair.Key, keyValuePair.Value));
+            //hash the values
+            string signatureString = Convert.ToBase64String(
+                hmacsha1.ComputeHash(
+                    new ASCIIEncoding().GetBytes(signatureBaseString)));
+
+            return signatureString;
         }
-		
-		string paramString = dictionaryStringBuilder.ToString().Substring(0, dictionaryStringBuilder.Length - 3);
-		return paramString;
-	}
 
-	public void ResetInstance()
-	{
-		instance = null;
-	}
+        private string CreateAuthorizationHeaderParameter(string signature, string timeStamp)
+        {
+            string authorizationHeaderParams = String.Empty;
+            authorizationHeaderParams += "OAuth ";
+
+            authorizationHeaderParams += "oauth_consumer_key="
+                + "\"" + Uri.EscapeDataString(this.oauthConsumerKey) + "\", ";
+
+            authorizationHeaderParams += "oauth_nonce=" + "\"" +
+                                         Uri.EscapeDataString(this.oauthNonce) + "\", ";
+
+            authorizationHeaderParams += "oauth_signature=" + "\""
+                                         + Uri.EscapeDataString(signature) + "\", ";
+
+            authorizationHeaderParams += "oauth_signature_method=" + "\"" +
+                Uri.EscapeDataString("HMAC-SHA1") +
+                "\", ";
+
+            authorizationHeaderParams += "oauth_timestamp=" + "\"" +
+                                         Uri.EscapeDataString(timeStamp) + "\", ";
+
+            authorizationHeaderParams += "oauth_token=" + "\"" +
+                                         Uri.EscapeDataString(this.oauthToken) + "\", ";
+
+            authorizationHeaderParams += "oauth_version=" + "\"" +
+                                         Uri.EscapeDataString("1.0") + "\"";
+            return authorizationHeaderParams;
+        }
+
+        private string ParamDictionaryToString(IDictionary<string, string> paramsDictionary)
+        {
+            StringBuilder dictionaryStringBuilder = new StringBuilder();
+            foreach (KeyValuePair<string, string> keyValuePair in paramsDictionary)
+            {
+                //append a = between the key and the value and a & after the value
+                dictionaryStringBuilder.Append(string.Format("{0}={1}&", keyValuePair.Key, keyValuePair.Value));
+            }
+
+            string paramString = dictionaryStringBuilder.ToString().Substring(0, dictionaryStringBuilder.Length - 3);
+            return paramString;
+        }
+
+        public void ResetInstance()
+        {
+            instance = null;
+        }
+    }
 }
+
+
