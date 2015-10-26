@@ -18,7 +18,9 @@ with con:
 
     print "SQLite version: %s" % data
 
-    cur.execute("CREATE TABLE IF NOT EXISTS Reddit_jw(Id TEXT, Author TEXT, Content TEXT, Link TEXT)")
+    cur.execute("DROP TABLE IF EXISTS Reddit_jw")
+    con.commit()
+    cur.execute("CREATE TABLE Reddit_jw(Id TEXT, Author TEXT, Content TEXT, Time DATETIME, Link TEXT)")
 # end db connection
 
 # init reddit access
@@ -53,7 +55,6 @@ taxonomy = [
         'Take a swig',
         'Governing Body',
         'Australia',
-        'GB',
         'Commission',
         'Congregation',
         'Geoffrey Jackson',
@@ -79,8 +80,10 @@ while True:
     for submission in subreddit.get_top_from_all(limit=100):
         op_text = submission.selftext.lower()
         op_title = submission.title.lower()
-        has_taxonomy = any(string in op_text for string in str(prawWords).lower())
-        if submission.id not in already_done and has_taxonomy:
+        has_taxonomy = any(string in op_text for string in str(taxonomy).lower())
+        has_TOPIC = any(string in op_text for string in str(taxonomyTOPIC).lower()) or any(string in op_title for string in str(taxonomyTOPIC).lower())
+        has_PEOPLE = any(string in op_text for string in str(taxonomyPEOPLE).lower()) or any(string in op_title for string in str(taxonomyPEOPLE).lower())
+        if submission.id not in already_done and (has_TOPIC or has_PEOPLE) and has_taxonomy:
             if submission.author is None:
                 subname = "Aouthor deleted"
             else:
@@ -88,21 +91,21 @@ while True:
             msg = "[Taxonomy related thread]({}, {}, {}, {})".format(submission.id, subname, submission.selftext.encode('utf-8'), submission.short_link)
             print 'Found: %s' % msg
             already_done.append(submission.id)
-            cur.execute("""INSERT INTO Reddit_jw(Id, Author, Content, Link) VALUES(?,?,?,?);""", [submission.id, subname, submission.selftext.encode('utf-8'), submission.short_link])
+            cur.execute("""INSERT INTO Reddit_jw(Id, Author, Content, Link) VALUES(?,?,?,?,?);""", [submission.id, subname, submission.selftext.encode('utf-8'), submission.created_utc, submission.short_link])
 
-        flat_comments = praw.helpers.flatten_tree(submission.comments)
-        for comment in flat_comments:
-            if not hasattr(comment, 'body'):
-                continue
-            has_praw_comment = any(string in comment.body.lower() for string in str(prawWords).lower())
-            if has_praw_comment:
-                if comment.author is None:
-                    comname = "Author deleted"
-                else:
-                    comname = comment.author.name
-                cmsg = "[Taxonomy related comment]({}, {}, {}, {})".format(comment.id, comname, comment.body.encode('utf-8'), comment.permalink)
-                print 'Found: %s' % cmsg
-                cur.execute("""INSERT INTO Reddit_jw(Id, Author, Content, Link) VALUES(?,?,?,?);""", [comment.id, comname, comment.body, comment.permalink])
+            flat_comments = praw.helpers.flatten_tree(submission.comments)
+            for comment in flat_comments:
+                if not hasattr(comment, 'body'):
+                    continue
+                has_praw_comment = any(string in comment.body.lower() for string in str(taxonomy).lower())
+                if has_praw_comment:
+                    if comment.author is None:
+                        comname = "Author deleted"
+                    else:
+                        comname = comment.author.name
+                    cmsg = "[Taxonomy related comment]({}, {}, {}, {})".format(comment.id, comname, comment.body.encode('utf-8'), comment.permalink)
+                    print 'Found: %s' % cmsg
+                    cur.execute("""INSERT INTO Reddit_jw(Id, Author, Content, Link) VALUES(?,?,?,?,?);""", [comment.id, comname, comment.body, comment.created_utc, comment.permalink])
     con.commit()
     time.sleep(1800)
 
