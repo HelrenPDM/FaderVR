@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-using Mono.Data.SqliteClient;
 
 public class SQLiteWrapper : MonoBehaviour
 {
