@@ -1,4 +1,4 @@
-﻿//
+//
 // TwitterChannel.cs
 //
 // Author:
@@ -30,9 +30,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace Fader {
-
-	public class TwitterChannelBase {
+namespace Fader
+{
+	public class TwitterChannelBase : MonoBehaviour
+	{
 
 		/// <summary>
 		/// Gets or sets the name of the channel.
@@ -60,67 +61,80 @@ namespace Fader {
 		/// <summary>
 		/// The m_ search results.
 		/// </summary>
-		public List<List<TwitterBase>> m_SearchResults;
+		public List<List<TwitterDataBase>> m_SearchResults;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int RetweetThreshold { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public int RetweetThreshold { get; set; }
 
 		/// Gets or sets a value indicating whether this <see cref="FaderChannel"/> is active.
 		/// </summary>
 		/// <value><c>true</c> if active; otherwise, <c>false</c>.</value>
-		public bool Active {get;set;}
+		public bool Active { get; set; }
 
 		// Use this for initialization
-		void Start () {
-            RetweetThreshold = 0;
+		void Start ()
+		{
+			RetweetThreshold = 0;
+			foreach (string item in m_SearchTerms)
+			{
+				StartSimpleSearch (item, true);
+			}
+			m_SearchResults = new List<List<TwitterDataBase>> ();
 		}
 	
 		// Update is called once per frame
-		void Update () {
+		void Update ()
+		{
 
 		}
 
-        void ResultsCallBack(List<TwitterBase> tweetList) {
-
-            m_SearchResults.Add(tweetList);
-        }
-
-		public void StartSimpleSearch(string searchTerm, bool filterRetweets)
+		void ResultsCallBack (List<TwitterDataBase> tweetList)
 		{
+			foreach (TwitterDataBase tweet in tweetList)
+			{
+				Debug.Log ("Tweet: " + tweet.TweetText.ToString ());
+			}
+			m_SearchResults.Add (tweetList);
+			Vector3 offsetHeight = new Vector3 (0, m_SearchResults.Count - 1, 0);
+			RingDistribution (tweetList, offsetHeight, 30f);
+		}
+
+		public void StartSimpleSearch (string searchTerm, bool filterRetweets)
+		{
+			Debug.Log ("StartSimpleSearch on Twitter");
 			if (filterRetweets)
 			{
 				string tmp = searchTerm + " -filter:retweets";
-				TwitterAPI.instance.SearchTwitter(tmp, ResultsCallBack);
+				TwitterAPI.instance.SearchTwitter (tmp, ResultsCallBack);
 			}
 			else
 			{
-				TwitterAPI.instance.SearchTwitter(searchTerm, ResultsCallBack);
+				TwitterAPI.instance.SearchTwitter (searchTerm, ResultsCallBack);
 			}
 		}
 	
-		public void RingDistribution(List<TwitterBase> tweetList, Vector3 center, float radius)
+		public void RingDistribution (List<TwitterDataBase> tweetList, Vector3 center, float radius)
 		{
-            List<FaderEntityToObject<TwitterBase>> tmpObjectList = new List<FaderEntityToObject<TwitterBase>>();
+			List<FaderEntityToObject<TwitterDataBase>> tmpObjectList = new List<FaderEntityToObject<TwitterDataBase>> ();
 
-            float step = 360f / (tweetList.Count < 1 ? 1 : tweetList.Count);
+			float step = 360f / (tweetList.Count < 1 ? 1 : tweetList.Count);
 
-            foreach (TwitterBase item in tweetList)
-            {
-                FaderEntityToObject<TwitterBase> tmp = new FaderEntityToObject<TwitterBase>(item, PrimitiveType.Sphere);
-                tmp.PositionObject(RandomCircle(tweetList.FindIndex(x => x.TweetID == item.TweetID), step, center, radius));
-                tmp.transform.rotation = Quaternion.LookRotation(tmp.transform.position - center);
-                tmpObjectList.Add(tmp);
-            }
+			foreach (TwitterDataBase item in tweetList)
+			{
+				FaderTwitterToObject tmp = new FaderTwitterToObject (FaderTwitterToObject.EntityType.Twitter, item, PrimitiveType.Sphere);
+				tmp.PositionObject (RandomCircle (tweetList.FindIndex (x => x.TweetID == item.TweetID), step, center, radius));
+				tmpObjectList.Add (tmp);
+			}
 		}
 		
-		private Vector3 RandomCircle(int index, float step, Vector3 center, float radius)
+		private Vector3 RandomCircle (int index, float step, Vector3 center, float radius)
 		{
 			float ang = (index * step);
 			Vector3 pos;
-			pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
-			pos.z = center.z + radius * Mathf.Cos(ang * Mathf.Deg2Rad);
+			pos.x = center.x + radius * Mathf.Sin (ang * Mathf.Deg2Rad);
+			pos.z = center.z + radius * Mathf.Cos (ang * Mathf.Deg2Rad);
 			pos.y = center.y;
 			return pos;
 		}

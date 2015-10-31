@@ -27,9 +27,19 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Fader {
+namespace Fader
+{
 
-	public class FaderEntityToObject<PayloadType> : MonoBehaviour {
+	public abstract class FaderEntityToObject<PayloadType>
+	{
+		public enum EntityType
+		{
+			Twitter,
+			Reddit,
+			Facebook,
+		}
+
+		public EntityType m_EntityType;
 
 		public PayloadType m_FaderEntity;
 
@@ -38,25 +48,27 @@ namespace Fader {
 		public TextMesh m_FaderObjectText;
 
 		[SerializeField]
-		public float m_FaderObjectTextRowLimit = 2f;
+		public float
+			m_FaderObjectTextRowLimit = 2f;
 
+		/* CONSTRUCTORS LIKE THIS
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
 		/// </summary>
-		public FaderEntityToObject()
+		public FaderEntityToObject (EntityType m_EntityType)
 		{
-			m_FaderObject = new GameObject();
-			m_Rend = new Renderer();
+			m_FaderObject = new GameObject ();
+			m_Rend = new Renderer ();
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
 		/// </summary>
 		/// <param name="data">Data.</param>
-		public FaderEntityToObject(PayloadType data)
+		public FaderEntityToObject (EntityType m_EntityType, PayloadType data)
 		{
-			m_FaderObject = new GameObject();
-			m_Rend = new Renderer();
+			m_FaderObject = new GameObject ();
+			m_Rend = new Renderer ();
 			m_FaderEntity = data;
 		}
 
@@ -65,29 +77,41 @@ namespace Fader {
 		/// </summary>
 		/// <param name="data">Data.</param>
 		/// <param name="primType">Prim type.</param>
-		public FaderEntityToObject(PayloadType data, PrimitiveType primType)
+		public FaderEntityToObject (EntityType m_EntityType, PayloadType data, PrimitiveType primType)
 		{
-			m_FaderObject = new GameObject();
-			m_Rend = new Renderer();
+			m_FaderObject = GameObject.CreatePrimitive (primType);
+			m_Rend = new Renderer ();
 			m_FaderEntity = data;
-			CreateObject(primType);
-		}
+		}*/
 
 		/// <summary>
 		/// Creates the object.
 		/// </summary>
 		/// <param name="primType">Prim type.</param>
-		public void CreateObject(PrimitiveType primType)
+		public void CreateObject (PrimitiveType primType)
 		{
-			m_FaderObject = GameObject.CreatePrimitive(primType);
+			m_FaderObject = GameObject.CreatePrimitive (primType);
 		}
 
+		/// <summary>
+		/// Gets the transform.
+		/// </summary>
+		/// <returns>The transform.</returns>
+		public GameObject GetGameObject ()
+		{
+			return m_FaderObject;
+		}
+
+		public void AddToGameObject (PayloadType data)
+		{
+			m_FaderObject.AddComponent (typeof(PayloadType));
+		}
 
 		/// <summary>
 		/// Positions the object.
 		/// </summary>
 		/// <param name="pos">Position.</param>
-		public void PositionObject(Vector3 pos)
+		public void PositionObject (Vector3 pos)
 		{
 			m_FaderObject.transform.position = pos;
 		}
@@ -96,18 +120,18 @@ namespace Fader {
 		/// Scales the object.
 		/// </summary>
 		/// <param name="scale">Scale.</param>
-		public void ScaleObject(float scale)
+		public void ScaleObject (float scale)
 		{
-			m_FaderObject.transform.localScale = scale > 1f ? new Vector3(scale, scale, scale) : new Vector3(1f, 1f, 1f);
+			m_FaderObject.transform.localScale = scale > 1f ? new Vector3 (scale, scale, scale) : new Vector3 (1f, 1f, 1f);
 		}
 
 		/// <summary>
 		/// Creates the text component.
 		/// </summary>
 		/// <param name="text">Text.</param>
-		public void CreateTextComponent(string text)
+		public void CreateTextComponent (string text)
 		{
-			m_FaderObjectText = m_FaderObject.AddComponent<TextMesh>();
+			m_FaderObjectText = m_FaderObject.AddComponent<TextMesh> ();
 			m_FaderObjectText.text = text;
 		}
 
@@ -119,7 +143,7 @@ namespace Fader {
 		/// <param name="anchor">Anchor.</param>
 		/// <param name="alignment">Alignment.</param>
 		/// <param name="trim">If set to <c>true</c> trim.</param>
-		public void SetTextComponentProperties(int fontSize, Color color, TextAnchor anchor, TextAlignment alignment, bool trim)
+		public void SetTextComponentProperties (int fontSize, Color color, TextAnchor anchor, TextAlignment alignment, bool trim)
 		{
 			m_FaderObjectText.fontSize = fontSize;
 			m_FaderObjectText.color = color;
@@ -128,7 +152,7 @@ namespace Fader {
 
 			if (trim)
 			{
-				m_FaderObjectText.text = TrimText(m_FaderObjectText);
+				m_FaderObjectText.text = TrimText (m_FaderObjectText);
 			}
 		}
 
@@ -136,7 +160,7 @@ namespace Fader {
 		/// Sets the text component position.
 		/// </summary>
 		/// <param name="pos">Position.</param>
-		public void SetTextComponentPosition(Vector3 pos)
+		public void SetTextComponentPosition (Vector3 pos)
 		{
 			m_FaderObjectText.transform.position = pos;
 		}
@@ -145,9 +169,9 @@ namespace Fader {
 		/// Sets the text component scale.
 		/// </summary>
 		/// <param name="scale">Scale.</param>
-		public void SetTextComponentScale(float scale)
+		public void SetTextComponentScale (float scale)
 		{
-			m_FaderObjectText.transform.localScale = scale > 1f ? new Vector3(scale, scale, scale) : new Vector3(1f, 1f, 1f);
+			m_FaderObjectText.transform.localScale = scale > 1f ? new Vector3 (scale, scale, scale) : new Vector3 (1f, 1f, 1f);
 		}
 
 		/// <summary>
@@ -155,21 +179,70 @@ namespace Fader {
 		/// </summary>
 		/// <returns>The text.</returns>
 		/// <param name="tmesh">Tmesh.</param>
-		string TrimText(TextMesh tmesh)
+		string TrimText (TextMesh tmesh)
 		{
 			string builder = "";
-			string[] parts = tmesh.text.Split(' ');
+			string[] parts = tmesh.text.Split (' ');
 			tmesh.text = "";
 			for (int i = 0; i < parts.Length; i++)
 			{
-				tmesh.text += parts[i] + " ";
-				if (tmesh.transform.GetComponent<Renderer>().bounds.extents.x > m_FaderObjectTextRowLimit)
+				tmesh.text += parts [i] + " ";
+				if (tmesh.transform.GetComponent<Renderer> ().bounds.extents.x > m_FaderObjectTextRowLimit)
 				{
-					tmesh.text = builder.TrimEnd() + System.Environment.NewLine + parts[i] + " ";
+					tmesh.text = builder.TrimEnd () + System.Environment.NewLine + parts [i] + " ";
 				}
 				builder = tmesh.text;
 			}
 			return builder;
 		}
 	}
+
+	public class FaderTwitterToObject : FaderEntityToObject<TwitterDataBase>
+	{
+		public const string Tag = "Tweet";
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
+		/// </summary>
+		public FaderTwitterToObject (EntityType entityType)
+		{
+			m_EntityType = entityType;
+			m_Rend = new Renderer ();
+		}
+		
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
+		/// </summary>
+		/// <param name="data">Data.</param>
+		public FaderTwitterToObject (EntityType entityType, TwitterDataBase data)
+		{
+			m_EntityType = entityType;
+			m_FaderObject.name = data.TweetID.ToString ();
+			m_Rend = new Renderer ();
+			m_FaderEntity = data;
+		}
+		
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
+		/// </summary>
+		/// <param name="data">Data.</param>
+		/// <param name="primType">Prim type.</param>
+		public FaderTwitterToObject (EntityType entityType, TwitterDataBase data, PrimitiveType primType)
+		{
+			m_EntityType = entityType;
+			m_FaderObject = GameObject.CreatePrimitive (primType);
+			m_FaderObject.name = m_EntityType.ToString () + " " + data.TweetID.ToString ();
+			m_FaderObject.tag = Tag;
+			m_FaderEntity = data;
+			m_Rend = new Renderer ();
+			AddToGameObject (data);
+			TwitterDataBase tmp = m_FaderObject.GetComponent<TwitterDataBase> ();
+			tmp.CreationDate = data.CreationDate;
+			tmp.ImageURL = data.ImageURL;
+			tmp.ProfileImageUrl = data.ProfileImageUrl;
+			tmp.RetweetCount = data.RetweetCount;
+			tmp.ScreenName = data.ScreenName;
+			tmp.TweetID = data.TweetID;
+			tmp.TweetText = data.TweetText;
+		}
+	};
 }

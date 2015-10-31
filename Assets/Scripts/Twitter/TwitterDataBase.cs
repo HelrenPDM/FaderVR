@@ -1,5 +1,5 @@
 //
-// StartSearch.cs
+// TwitterBase.cs
 //
 // Author:
 //       Stephan Gensch <stgensch@vragments.com>
@@ -23,32 +23,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
+using System.Collections;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace Fader
 {
-	public class StartSearch : MonoBehaviour
+	public class TwitterDataBase : MonoBehaviour
 	{
-		public ButtonDemo SimpleButton;
-		public TwitterChannelBase m_TwitterChannel;
+		public long TweetID = 0;
+		public string ScreenName = "";
+		public DateTime CreationDate = DateTime.Now;
+		public string TweetText = "";
+		public string ProfileImageUrl = "";
+		public long RetweetCount = 0;
 
-		// Use this for initialization
-		void Start ()
-		{
-			m_TwitterChannel = FindObjectOfType<TwitterChannelBase> ();
-			SimpleButton.StartHandler += OnSimpleButtonAction;
-		}
-
-		private void OnSimpleButtonAction (object sender, LMWidgets.EventArg<bool> arg)
-		{
-			Debug.Log (this.transform.name + " pressed.");
-			foreach (string item in m_TwitterChannel.m_SearchTerms)
-			{
-				m_TwitterChannel.StartSimpleSearch (item, true);
-			}
-		}
+		public string ImageURL = "";
 	}
 }
