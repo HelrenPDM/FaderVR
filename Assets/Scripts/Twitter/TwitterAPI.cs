@@ -11,122 +11,126 @@ using MiniJSON;
 
 namespace Fader
 {
-    public class TwitterAPI : MonoBehaviour
-    {
-        public string oauthConsumerKey = "";
-        public string oauthConsumerSecret = "";
-        public string oauthToken = "";
-        public string oauthTokenSecret = "";
+	public class TwitterAPI : MonoBehaviour
+	{
+		public string oauthConsumerKey = "";
+		public string oauthConsumerSecret = "";
+		public string oauthToken = "";
+		public string oauthTokenSecret = "";
 
-        private string oauthNonce = "";
-        private string oauthTimeStamp = "";
+		private string oauthNonce = "";
+		private string oauthTimeStamp = "";
 
-        public static TwitterAPI instance = null;
+		public static TwitterAPI instance = null;
 
-        // Use this for initialization
-        void Awake()
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else
-            {
-                Debug.LogError("More then one instance of TwitterAPI: " + this.transform.name);
-            }
-        }
+		// http://blog.kevinyu.org/2012/07/handling-json-in-net.html
+		public const string Const_TwitterDateTemplate = "ddd MMM dd HH:mm:ss +ffff yyyy";
 
-        // Update is called once per frame
-        void Update()
-        {
+		// Use this for initialization
+		void Awake ()
+		{
+			if (instance == null)
+			{
+				instance = this;
+			}
+			else
+			{
+				Debug.LogError ("More then one instance of TwitterAPI: " + this.transform.name);
+			}
+		}
 
-        }
+		// Update is called once per frame
+		void Update ()
+		{
 
-        // Use of MINI JSON http://forum.unity3d.com/threads/35484-MiniJSON-script-for-parsing-JSON-data
-        private List<TwitterBase> ParseResultsFromSearchTwitter(string jsonResults)
-        {
-            Debug.Log(jsonResults);
-            List<TwitterBase> twitterDataList = new List<TwitterBase>();
+		}
 
-            foreach (var entry in twitterDataList)
-            {
-                Debug.Log(entry.ScreenName);
-            }
+		// Use of MINI JSON http://forum.unity3d.com/threads/35484-MiniJSON-script-for-parsing-JSON-data
+		private List<TwitterDataBase> ParseResultsFromSearchTwitter (string jsonResults)
+		{
+			Debug.Log (jsonResults);
+			List<TwitterDataBase> twitterDataList = new List<TwitterDataBase> ();
 
-            IDictionary search = (IDictionary)Json.Deserialize(jsonResults);
-            IList tweets = (IList)search["statuses"];
-            foreach (IDictionary tweet in tweets)
-            {
-                IDictionary userInfo = tweet["user"] as IDictionary;
+			foreach (var entry in twitterDataList)
+			{
+				Debug.Log (entry.ScreenName);
+			}
 
-                TwitterBase twitterbase = new TwitterBase();
-                twitterbase.TweetID = (Int64)tweet["id"];
-                twitterbase.ScreenName = userInfo["screen_name"] as string;
-                twitterbase.CreationDate = DateTime.Parse(tweet["created_at"] as string);
-                twitterbase.TweetText = tweet["text"] as string;
-                twitterbase.RetweetCount = (Int64)tweet["retweet_count"];
-                twitterbase.ProfileImageUrl = userInfo["profile_image_url"] as string;
+			IDictionary search = (IDictionary)Json.Deserialize (jsonResults);
+			IList tweets = (IList)search ["statuses"];
+			foreach (IDictionary tweet in tweets)
+			{
+				IDictionary userInfo = tweet ["user"] as IDictionary;
+				IDictionary tweetEntities = tweet ["entities"] as IDictionary;
 
-                twitterDataList.Add(twitterbase);
-            }
+				TwitterDataBase twitterbase = new TwitterDataBase ();
+				twitterbase.TweetID = (Int64)tweet ["id"];
+				twitterbase.ScreenName = userInfo ["screen_name"] as string;
+				twitterbase.CreationDate = DateTime.ParseExact (tweet ["created_at"] as string, Const_TwitterDateTemplate, new System.Globalization.CultureInfo ("en-US"));
+				twitterbase.TweetText = tweet ["text"] as string;
+				twitterbase.RetweetCount = (Int64)tweet ["retweet_count"];
+				twitterbase.ProfileImageUrl = userInfo ["profile_image_url"] as string;
 
-            return twitterDataList;
-        }
+				twitterDataList.Add (twitterbase);
+			}
 
-        public void SearchTwitter(string keywords, Action<List<TwitterBase>> callback)
-        {
-            Debug.Log("Run SearchTwitter " + instance.name + " with " + keywords);
-            // Override the nounce and timestamp here if troubleshooting with Twitter's OAuth Tool
-            oauthNonce = Convert.ToBase64String(new ASCIIEncoding().GetBytes(DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture)));
-            TimeSpan _timeSpan = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0);
-            oauthTimeStamp = Convert.ToInt64(_timeSpan.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+			return twitterDataList;
+		}
 
-            StartCoroutine(SearchTwitter_Coroutine(keywords, callback));
-        }
+		public void SearchTwitter (string keywords, Action<List<TwitterDataBase>> callback)
+		{
+			Debug.Log ("Run SearchTwitter " + instance.name + " with " + keywords);
+			// Override the nounce and timestamp here if troubleshooting with Twitter's OAuth Tool
+			oauthNonce = Convert.ToBase64String (new ASCIIEncoding ().GetBytes (DateTime.Now.Ticks.ToString (CultureInfo.InvariantCulture)));
+			TimeSpan _timeSpan = DateTime.UtcNow - new DateTime (1970, 1, 1, 0, 0, 0);
+			oauthTimeStamp = Convert.ToInt64 (_timeSpan.TotalSeconds).ToString (CultureInfo.InvariantCulture);
 
-        private IEnumerator SearchTwitter_Coroutine(string keywords, Action<List<TwitterBase>> callback)
-        {
-            Debug.Log("Run SearchTwitter_Coroutine of " + instance.name + " with " + keywords);
-            // Fix up hashes to be webfriendly
-            keywords = Uri.EscapeDataString(keywords);
+			StartCoroutine (SearchTwitter_Coroutine (keywords, callback));
+		}
 
-            string twitterUrl = "https://api.twitter.com/1.1/search/tweets.json";
+		private IEnumerator SearchTwitter_Coroutine (string keywords, Action<List<TwitterDataBase>> callback)
+		{
+			Debug.Log ("Run SearchTwitter_Coroutine of " + instance.name + " with " + keywords);
+			// Fix up hashes to be webfriendly
+			keywords = Uri.EscapeDataString (keywords);
 
-            SortedDictionary<string, string> twitterParamsDictionary = new SortedDictionary<string, string>
+			string twitterUrl = "https://api.twitter.com/1.1/search/tweets.json";
+
+			SortedDictionary<string, string> twitterParamsDictionary = new SortedDictionary<string, string>
         {
             {"q", keywords},
             {"count", "100"},
             {"result_type", "popular"},
         };
 
-            string signature = CreateSignature(twitterUrl, twitterParamsDictionary);
-            Debug.Log("OAuth Signature: " + signature);
+			string signature = CreateSignature (twitterUrl, twitterParamsDictionary);
+			Debug.Log ("OAuth Signature: " + signature);
 
-            string authHeaderParam = CreateAuthorizationHeaderParameter(signature, this.oauthTimeStamp);
-            Debug.Log("Auth Header: " + authHeaderParam);
+			string authHeaderParam = CreateAuthorizationHeaderParameter (signature, this.oauthTimeStamp);
+			Debug.Log ("Auth Header: " + authHeaderParam);
 
-            Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers["Authorization"] = authHeaderParam;
+			Dictionary<string, string> headers = new Dictionary<string, string> ();
+			headers ["Authorization"] = authHeaderParam;
 
-            string twitterParams = ParamDictionaryToString(twitterParamsDictionary);
+			string twitterParams = ParamDictionaryToString (twitterParamsDictionary);
 
-            WWW query = new WWW(twitterUrl + "?" + twitterParams, null, headers);
-            yield return query;
+			WWW query = new WWW (twitterUrl + "?" + twitterParams, null, headers);
+			yield return query;
 
-            callback(ParseResultsFromSearchTwitter(query.text));
-        }
+			callback (ParseResultsFromSearchTwitter (query.text));
+		}
 
-        // Taken from http://www.i-avington.com/Posts/Post/making-a-twitter-oauth-api-call-using-c
-        private string CreateSignature(string url, SortedDictionary<string, string> searchParamsDictionary)
-        {
-            //string builder will be used to append all the key value pairs
-            StringBuilder signatureBaseStringBuilder = new StringBuilder();
-            signatureBaseStringBuilder.Append("GET&");
-            signatureBaseStringBuilder.Append(Uri.EscapeDataString(url));
-            signatureBaseStringBuilder.Append("&");
+		// Taken from http://www.i-avington.com/Posts/Post/making-a-twitter-oauth-api-call-using-c
+		private string CreateSignature (string url, SortedDictionary<string, string> searchParamsDictionary)
+		{
+			//string builder will be used to append all the key value pairs
+			StringBuilder signatureBaseStringBuilder = new StringBuilder ();
+			signatureBaseStringBuilder.Append ("GET&");
+			signatureBaseStringBuilder.Append (Uri.EscapeDataString (url));
+			signatureBaseStringBuilder.Append ("&");
 
-            //the key value pairs have to be sorted by encoded key
-            SortedDictionary<string, string> urlParamsDictionary = new SortedDictionary<string, string>
+			//the key value pairs have to be sorted by encoded key
+			SortedDictionary<string, string> urlParamsDictionary = new SortedDictionary<string, string>
                              {
                                  {"oauth_version", "1.0"},
                                  {"oauth_consumer_key", this.oauthConsumerKey},
@@ -136,79 +140,79 @@ namespace Fader
                                  {"oauth_token", this.oauthToken}
                              };
 
-            foreach (KeyValuePair<string, string> keyValuePair in searchParamsDictionary)
-            {
-                urlParamsDictionary.Add(keyValuePair.Key, keyValuePair.Value);
-            }
+			foreach (KeyValuePair<string, string> keyValuePair in searchParamsDictionary)
+			{
+				urlParamsDictionary.Add (keyValuePair.Key, keyValuePair.Value);
+			}
 
-            signatureBaseStringBuilder.Append(Uri.EscapeDataString(ParamDictionaryToString(urlParamsDictionary)));
-            string signatureBaseString = signatureBaseStringBuilder.ToString();
+			signatureBaseStringBuilder.Append (Uri.EscapeDataString (ParamDictionaryToString (urlParamsDictionary)));
+			string signatureBaseString = signatureBaseStringBuilder.ToString ();
 
-            Debug.Log("Signature Base String: " + signatureBaseString);
+			Debug.Log ("Signature Base String: " + signatureBaseString);
 
-            //generation the signature key the hash will use
-            string signatureKey =
-                Uri.EscapeDataString(this.oauthConsumerSecret) + "&" +
-                Uri.EscapeDataString(this.oauthTokenSecret);
+			//generation the signature key the hash will use
+			string signatureKey =
+                Uri.EscapeDataString (this.oauthConsumerSecret) + "&" +
+				Uri.EscapeDataString (this.oauthTokenSecret);
 
-            HMACSHA1 hmacsha1 = new HMACSHA1(
-                new ASCIIEncoding().GetBytes(signatureKey));
+			HMACSHA1 hmacsha1 = new HMACSHA1 (
+                new ASCIIEncoding ().GetBytes (signatureKey));
 
-            //hash the values
-            string signatureString = Convert.ToBase64String(
-                hmacsha1.ComputeHash(
-                    new ASCIIEncoding().GetBytes(signatureBaseString)));
+			//hash the values
+			string signatureString = Convert.ToBase64String (
+                hmacsha1.ComputeHash (
+                    new ASCIIEncoding ().GetBytes (signatureBaseString)));
 
-            return signatureString;
-        }
+			return signatureString;
+		}
 
-        private string CreateAuthorizationHeaderParameter(string signature, string timeStamp)
-        {
-            string authorizationHeaderParams = String.Empty;
-            authorizationHeaderParams += "OAuth ";
+		private string CreateAuthorizationHeaderParameter (string signature, string timeStamp)
+		{
+			string authorizationHeaderParams = String.Empty;
+			authorizationHeaderParams += "OAuth ";
 
-            authorizationHeaderParams += "oauth_consumer_key="
-                + "\"" + Uri.EscapeDataString(this.oauthConsumerKey) + "\", ";
+			authorizationHeaderParams += "oauth_consumer_key="
+				+ "\"" + Uri.EscapeDataString (this.oauthConsumerKey) + "\", ";
 
-            authorizationHeaderParams += "oauth_nonce=" + "\"" +
-                                         Uri.EscapeDataString(this.oauthNonce) + "\", ";
+			authorizationHeaderParams += "oauth_nonce=" + "\"" +
+				Uri.EscapeDataString (this.oauthNonce) + "\", ";
 
-            authorizationHeaderParams += "oauth_signature=" + "\""
-                                         + Uri.EscapeDataString(signature) + "\", ";
+			authorizationHeaderParams += "oauth_signature=" + "\""
+				+ Uri.EscapeDataString (signature) + "\", ";
 
-            authorizationHeaderParams += "oauth_signature_method=" + "\"" +
-                Uri.EscapeDataString("HMAC-SHA1") +
-                "\", ";
+			authorizationHeaderParams += "oauth_signature_method=" + "\"" +
+				Uri.EscapeDataString ("HMAC-SHA1") +
+				"\", ";
 
-            authorizationHeaderParams += "oauth_timestamp=" + "\"" +
-                                         Uri.EscapeDataString(timeStamp) + "\", ";
+			authorizationHeaderParams += "oauth_timestamp=" + "\"" +
+				Uri.EscapeDataString (timeStamp) + "\", ";
 
-            authorizationHeaderParams += "oauth_token=" + "\"" +
-                                         Uri.EscapeDataString(this.oauthToken) + "\", ";
+			authorizationHeaderParams += "oauth_token=" + "\"" +
+				Uri.EscapeDataString (this.oauthToken) + "\", ";
 
-            authorizationHeaderParams += "oauth_version=" + "\"" +
-                                         Uri.EscapeDataString("1.0") + "\"";
-            return authorizationHeaderParams;
-        }
+			authorizationHeaderParams += "oauth_version=" + "\"" +
+				Uri.EscapeDataString ("1.0") + "\"";
+			return authorizationHeaderParams;
+		}
 
-        private string ParamDictionaryToString(IDictionary<string, string> paramsDictionary)
-        {
-            StringBuilder dictionaryStringBuilder = new StringBuilder();
-            foreach (KeyValuePair<string, string> keyValuePair in paramsDictionary)
-            {
-                //append a = between the key and the value and a & after the value
-                dictionaryStringBuilder.Append(string.Format("{0}={1}&", keyValuePair.Key, keyValuePair.Value));
-            }
+		private string ParamDictionaryToString (IDictionary<string, string> paramsDictionary)
+		{
+			StringBuilder dictionaryStringBuilder = new StringBuilder ();
+			foreach (KeyValuePair<string, string> keyValuePair in paramsDictionary)
+			{
+				//append a = between the key and the value and a & after the value
+				dictionaryStringBuilder.Append (string.Format ("{0}={1}&", keyValuePair.Key, keyValuePair.Value));
+			}
 
-            string paramString = dictionaryStringBuilder.ToString().Substring(0, dictionaryStringBuilder.Length - 3);
-            return paramString;
-        }
+			string paramString = dictionaryStringBuilder.ToString ().Substring (0, dictionaryStringBuilder.Length - 3);
+			return paramString;
+		}
 
-        public void ResetInstance()
-        {
-            instance = null;
-        }
-    }
+		public void ResetInstance ()
+		{
+			instance = null;
+		}
+	}
 }
 
 

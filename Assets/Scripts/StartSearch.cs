@@ -26,25 +26,29 @@
 
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace Fader
 {
-    public class StartSearch : MonoBehaviour
-    {
-        public ButtonDemoToggle SimpleButton;
-        public FaderChannel<TwitterChannelBase> m_TwitterChannel;
+	public class StartSearch : MonoBehaviour
+	{
+		public ButtonDemo SimpleButton;
+		public TwitterChannelBase m_TwitterChannel;
 
-        // Use this for initialization
-        void Start()
-        {
-            m_TwitterChannel = GetComponent<FaderChannel<TwitterChannelBase>>();
-            SimpleButton.StartHandler += OnSimpleButtonAction;
-        }
+		// Use this for initialization
+		void Start ()
+		{
+			m_TwitterChannel = FindObjectOfType<TwitterChannelBase> ();
+			SimpleButton.StartHandler += OnSimpleButtonAction;
+		}
 
-        private void OnSimpleButtonAction(object sender, LMWidgets.EventArg<bool> arg)
-        {
-            Debug.Log(this.transform.name + " pressed.");
-            m_TwitterChannel.GetCurrentData().StartSimpleSearch("test", true);
-        }
-    }
+		private void OnSimpleButtonAction (object sender, LMWidgets.EventArg<bool> arg)
+		{
+			Debug.Log (this.transform.name + " pressed.");
+			foreach (string item in m_TwitterChannel.m_SearchTerms)
+			{
+				m_TwitterChannel.StartSimpleSearch (item, true);
+			}
+		}
+	}
 }

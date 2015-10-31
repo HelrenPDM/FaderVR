@@ -1,4 +1,4 @@
-﻿//
+//
 // FaderEntityDataBinder.cs
 //
 // Author:
@@ -97,5 +97,5 @@ namespace Fader {
 		}
 	}
 
-	public abstract class FaderEntityDataBinderTwitter : FaderEntityDataBinder<TwitterBase> {};
+	public abstract class FaderEntityDataBinderTwitter : FaderEntityDataBinder<TwitterDataBase> {};
 }

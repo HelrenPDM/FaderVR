@@ -32,7 +32,8 @@ using System.Collections.Generic;
 /// <summary>
 /// Fader channel.
 /// </summary>
-namespace Fader {
+namespace Fader
+{
 
 	public abstract class FaderChannel<ChannelType> : MonoBehaviour
 	{
@@ -41,23 +42,20 @@ namespace Fader {
 		/// </summary>
 		private ChannelType m_ChannelTypeValue;
 
-        private bool m_Active;
+		private bool m_Active;
 
-        public bool Active
-        {
-            get
-            {
-                return m_Active;
-            }
+		public bool Active {
+			get {
+				return m_Active;
+			}
 
-            set
-            {
-                m_Active = value;
-            }
-        }
+			set {
+				m_Active = value;
+			}
+		}
 
-        // Fires when the data is updated with the most recent data as the payload
-        public event EventHandler<FaderEventArg<ChannelType>> DataChangedHandler;
+		// Fires when the data is updated with the most recent data as the payload
+		public event EventHandler<FaderEventArg<ChannelType>> DataChangedHandler;
 		
 		/// <summary>
 		/// Returns the current system value of the data.
@@ -66,24 +64,27 @@ namespace Fader {
 		/// In the default implementation of the data-binder this is called every frame (in Update) so it's best to keep
 		/// this implementation light weight.
 		/// </remarks>
-		abstract public ChannelType GetCurrentData();
+		abstract public ChannelType GetCurrentData ();
 		
 		/// <summary>
 		/// Set the current system value of the data.
 		/// </summary>
-		abstract protected void setDataModel(ChannelType value);
+		abstract protected void setDataModel (ChannelType value);
 		
 		// Grab the inital value for GetCurrentData
-		virtual protected void Start() {
-			m_ChannelTypeValue = GetCurrentData();
+		virtual protected void Start ()
+		{
+			m_ChannelTypeValue = GetCurrentData ();
 		}
 		
 		// Checks for change in data.
 		// We need this in addition to SetCurrentData as the data we're linked to 
 		// could be modified by an external source.
-		void Update() {
-			ChannelType currentData = GetCurrentData();
-			if (!compare (m_ChannelTypeValue, currentData)) {
+		void Update ()
+		{
+			ChannelType currentData = GetCurrentData ();
+			if (!compare (m_ChannelTypeValue, currentData))
+			{
 				fireDataChangedEvent (currentData);
 			}
 			m_ChannelTypeValue = currentData;
@@ -91,17 +92,23 @@ namespace Fader {
 		
 		// Fire the data changed event. 
 		// Wrapping this in a function allows child classes to call it and fire the event.
-		protected void fireDataChangedEvent(ChannelType currentData) {
+		protected void fireDataChangedEvent (ChannelType currentData)
+		{
 			EventHandler<FaderEventArg<ChannelType>> handler = DataChangedHandler;
-			if ( handler != null ) { handler(this, new FaderEventArg<ChannelType>(currentData)); }
+			if (handler != null)
+			{
+				handler (this, new FaderEventArg<ChannelType> (currentData));
+			}
 		}
 		
 		// Handles proper comparison of generic types.
-		private bool compare(ChannelType x, ChannelType y)
+		private bool compare (ChannelType x, ChannelType y)
 		{
-			return EqualityComparer<ChannelType>.Default.Equals(x, y);
+			return EqualityComparer<ChannelType>.Default.Equals (x, y);
 		}
 	}
 
-	public abstract class FaderChannelTwitter : FaderChannel<TwitterChannelBase> {};
+	public abstract class FaderChannelTwitter : FaderChannel<TwitterChannelBase>
+	{
+	};
 }

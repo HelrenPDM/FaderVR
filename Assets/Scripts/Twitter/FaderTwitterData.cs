@@ -29,11 +29,11 @@ using System;
 
 namespace Fader
 {
-    public class FaderTwitterData : FaderData<TwitterBase>
+    public class FaderTwitterData : FaderData<TwitterDataBase>
     {
-        private TwitterBase m_Data;
+        private TwitterDataBase m_Data;
 
-        public override TwitterBase GetData()
+        public override TwitterDataBase GetData()
         {
             return m_Data;
         }
@@ -58,7 +58,7 @@ namespace Fader
             return m_Data.TweetText;
         }
 
-        protected override void setDataModel(TwitterBase value)
+        protected override void setDataModel(TwitterDataBase value)
         {
             if (value != null)
             {
