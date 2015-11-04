@@ -29,7 +29,8 @@ using System;
 
 namespace Fader
 {
-	public class TwitterDataBase : MonoBehaviour
+    [Serializable]
+    public class TwitterDataBase
 	{
 		public long TweetID = 0;
 		public string ScreenName = "";

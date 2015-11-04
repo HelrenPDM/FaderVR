@@ -24,11 +24,10 @@ namespace Fader
 		}
 
 
-		public void LookRotation (Transform character, Transform camera)
+		public void LookRotation (Transform camera)
 		{
 			float yRot = CrossPlatformInputManager.GetAxis ("Mouse X") * XSensitivity;
 			float xRot = CrossPlatformInputManager.GetAxis ("Mouse Y") * YSensitivity;
-
 			m_CameraTargetRot *= Quaternion.Euler (-xRot, yRot, 0f);
 
 			if (clampVerticalRotation)

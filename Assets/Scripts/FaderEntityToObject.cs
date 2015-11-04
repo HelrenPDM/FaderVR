@@ -206,8 +206,10 @@ namespace Fader
 		public FaderTwitterToObject (EntityType entityType)
 		{
 			m_EntityType = entityType;
-			m_Rend = new Renderer ();
-		}
+            m_FaderObject = new GameObject();
+            m_Rend = m_FaderObject.AddComponent<Renderer> ();
+            m_FaderObject.tag = Tag;
+        }
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
@@ -216,10 +218,22 @@ namespace Fader
 		public FaderTwitterToObject (EntityType entityType, TwitterDataBase data)
 		{
 			m_EntityType = entityType;
-			m_FaderObject.name = data.TweetID.ToString ();
-			m_Rend = new Renderer ();
-			m_FaderEntity = data;
-		}
+            m_FaderObject = GameObject.Instantiate(Resources.Load("Prefabs/Tweet", typeof(GameObject)) as GameObject);
+            m_FaderObject.tag = Tag;
+            m_FaderObject.name = m_EntityType.ToString() + " " + data.TweetID.ToString();
+            m_FaderEntity = data;
+            foreach (Transform t in m_FaderObject.transform)
+            {
+                if (t.name == "TextRight")
+                {
+                    t.GetComponent<TextMesh> ().text = data.TweetText.ToString ();
+                }
+                else if (t.name == "NameRight")
+                {
+                    t.GetComponent<TextMesh> ().text = data.ScreenName.ToString ();
+                }
+            }
+        }
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fader.FaderEntityToObject"/> class.
@@ -229,20 +243,23 @@ namespace Fader
 		public FaderTwitterToObject (EntityType entityType, TwitterDataBase data, PrimitiveType primType)
 		{
 			m_EntityType = entityType;
-			m_FaderObject = GameObject.CreatePrimitive (primType);
-			m_FaderObject.name = m_EntityType.ToString () + " " + data.TweetID.ToString ();
-			m_FaderObject.tag = Tag;
-			m_FaderEntity = data;
-			m_Rend = new Renderer ();
-			AddToGameObject (data);
-			TwitterDataBase tmp = m_FaderObject.GetComponent<TwitterDataBase> ();
+            m_FaderObject = GameObject.CreatePrimitive(primType);
+            m_Rend = m_FaderObject.GetComponent<Renderer> ();
+            m_FaderObject.transform.localScale = new Vector3 (.3f, .3f, .3f);
+            Material TweetMaterial = Resources.Load ("Materials/defaultMat.mat") as Material;
+            m_Rend.material = TweetMaterial;
+            m_FaderObject.tag = Tag;
+            m_FaderObject.name = m_EntityType.ToString () + " " + data.TweetID.ToString ();
+            m_FaderEntity = data;
+			//AddToGameObject (data);
+			/*TwitterDataBase tmp = m_FaderObject.GetComponent<TwitterDataBase> ();
 			tmp.CreationDate = data.CreationDate;
 			tmp.ImageURL = data.ImageURL;
 			tmp.ProfileImageUrl = data.ProfileImageUrl;
 			tmp.RetweetCount = data.RetweetCount;
 			tmp.ScreenName = data.ScreenName;
 			tmp.TweetID = data.TweetID;
-			tmp.TweetText = data.TweetText;
+			tmp.TweetText = data.TweetText;*/
 		}
 	};
 }

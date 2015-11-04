@@ -97,8 +97,9 @@ namespace Fader
 				Debug.Log ("Tweet: " + tweet.TweetText.ToString ());
 			}
 			m_SearchResults.Add (tweetList);
-			Vector3 offsetHeight = new Vector3 (0, m_SearchResults.Count - 1, 0);
-			RingDistribution (tweetList, offsetHeight, 30f);
+			Vector3 offsetHeight = new Vector3 (0, m_SearchResults.Count - 1, 5);
+			//RingDistribution (tweetList, offsetHeight, 5f);
+            LineDistribution (tweetList, offsetHeight, Vector3.forward, .5f, .1f, true);
 		}
 
 		public void StartSimpleSearch (string searchTerm, bool filterRetweets)
@@ -124,12 +125,45 @@ namespace Fader
 			foreach (TwitterDataBase item in tweetList)
 			{
 				FaderTwitterToObject tmp = new FaderTwitterToObject (FaderTwitterToObject.EntityType.Twitter, item, PrimitiveType.Sphere);
-				tmp.PositionObject (RandomCircle (tweetList.FindIndex (x => x.TweetID == item.TweetID), step, center, radius));
+				tmp.PositionObject (FullCircle (tweetList.FindIndex (x => x.TweetID == item.TweetID), step, center, radius));
 				tmpObjectList.Add (tmp);
 			}
 		}
-		
-		private Vector3 RandomCircle (int index, float step, Vector3 center, float radius)
+
+        public void LineDistribution (List<TwitterDataBase> tweetList, Vector3 start, Vector3 dir, float step, float inc, bool alt)
+        {
+            List<FaderEntityToObject<TwitterDataBase>> tmpObjectList = new List<FaderEntityToObject<TwitterDataBase>> ();
+
+            foreach (TwitterDataBase item in tweetList)
+            {
+                FaderTwitterToObject tmp = new FaderTwitterToObject (FaderTwitterToObject.EntityType.Twitter, item);
+                tmp.PositionObject (LineUp (start, tweetList.FindIndex (x => x.TweetID == item.TweetID), dir, step, inc, alt));
+                tmpObjectList.Add (tmp);
+            }
+        }
+
+        private Vector3 LineUp (Vector3 origin, int index, Vector3 dir, float step, float inc, bool alt)
+        {
+            float z = (index * step);
+            float y = (index * inc);
+            Vector3 pos = origin;
+            if (alt)
+            {
+                if (index % 2 == 0)
+                {
+                    pos.x += step;
+                }
+                else
+                {
+                    pos.x -= step;
+                }
+            }
+            pos.y += y;
+            pos.z += z;
+            return pos;
+        }
+
+        private Vector3 FullCircle (int index, float step, Vector3 center, float radius)
 		{
 			float ang = (index * step);
 			Vector3 pos;

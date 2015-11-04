@@ -25,7 +25,12 @@ namespace Fader
 		// Update is called once per frame
 		void Update ()
 		{
-	
-		}
-	}
+            RotateView();
+        }
+
+        private void RotateView()
+        {
+            m_MouseLook.LookRotation(m_Camera.transform);
+        }
+    }
 }
