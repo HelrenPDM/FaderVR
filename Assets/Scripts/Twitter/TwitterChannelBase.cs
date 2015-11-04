@@ -97,9 +97,9 @@ namespace Fader
 				Debug.Log ("Tweet: " + tweet.TweetText.ToString ());
 			}
 			m_SearchResults.Add (tweetList);
-			Vector3 offsetHeight = new Vector3 (0, m_SearchResults.Count - 1, 5);
+			Vector3 offsetHeight = new Vector3 (0, m_SearchResults.Count - 1.7f, 1.7f);
 			//RingDistribution (tweetList, offsetHeight, 5f);
-            LineDistribution (tweetList, offsetHeight, Vector3.forward, .5f, .1f, true);
+            LineDistribution (tweetList, offsetHeight, Vector3.forward, .5f, .15f, true);
 		}
 
 		public void StartSimpleSearch (string searchTerm, bool filterRetweets)

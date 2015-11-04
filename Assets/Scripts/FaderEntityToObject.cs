@@ -222,17 +222,8 @@ namespace Fader
             m_FaderObject.tag = Tag;
             m_FaderObject.name = m_EntityType.ToString() + " " + data.TweetID.ToString();
             m_FaderEntity = data;
-            foreach (Transform t in m_FaderObject.transform)
-            {
-                if (t.name == "TextRight")
-                {
-                    t.GetComponent<TextMesh> ().text = data.TweetText.ToString ();
-                }
-                else if (t.name == "NameRight")
-                {
-                    t.GetComponent<TextMesh> ().text = data.ScreenName.ToString ();
-                }
-            }
+            m_FaderObject.transform.FindChild ("Name").GetComponent<TextMesh> ().text = data.ScreenName.ToString ();
+            m_FaderObject.transform.FindChild ("Text").GetComponent<TextMesh> ().text = data.TweetText.ToString ();
         }
 		
 		/// <summary>
