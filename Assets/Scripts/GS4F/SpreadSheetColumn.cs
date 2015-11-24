@@ -37,7 +37,7 @@ namespace Fader
         /// <summary>
         /// 
         /// </summary>
-        private PayloadType m_TypeData;
+        public PayloadType m_TypeData;
 
         /// <summary>
         /// 
@@ -130,7 +130,7 @@ namespace Fader
 
         protected override void setDataModel (DateTime value)
         {
-            throw new NotImplementedException ();
+            this.m_TypeData = value;
         }
     };
 
@@ -138,12 +138,12 @@ namespace Fader
     {
         public override string GetData ()
         {
-            throw new NotImplementedException ();
+            return GetData ();
         }
 
         protected override void setDataModel (string value)
         {
-            throw new NotImplementedException ();
+            this.m_TypeData = value;
         }
     }
 
@@ -151,12 +151,12 @@ namespace Fader
     {
         public override long GetData ()
         {
-            throw new NotImplementedException ();
+            return GetData ();
         }
 
         protected override void setDataModel (long value)
         {
-            throw new NotImplementedException ();
+            this.m_TypeData = value;
         }
     }
 }

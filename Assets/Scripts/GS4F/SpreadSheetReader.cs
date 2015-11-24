@@ -22,10 +22,10 @@ namespace Fader
         }
 
         // Use of MINI JSON http://forum.unity3d.com/threads/35484-MiniJSON-script-for-parsing-JSON-data
-        private List<SpreadSheetColumn> ParseResultsFromSpreadSheet (string jsonResults)
+        private List<SpreadSheetColumnString> ParseResultsFromSpreadSheet (string jsonResults)
         {
             Debug.Log (jsonResults);
-            List<SpreadSheetColumn> sheetDataList = new List<SpreadSheetColumn> ();
+            List<SpreadSheetColumnString> sheetDataList = new List<SpreadSheetColumnString> ();
 
             foreach (var entry in sheetDataList)
             {
@@ -36,14 +36,8 @@ namespace Fader
             IList years = (IList)search ["yearbook_item"];
             foreach (IDictionary year in years)
             {
-                SpreadSheetColumn columnBase = new SpreadSheetColumn (year, SpreadSheet.CellType.);
-                columnBase.TweetID = (Int64)tweet ["id"];
-                columnBase.ScreenName = userInfo ["screen_name"] as string;
-                columnBase.CreationDate = DateTime.ParseExact (tweet ["created_at"] as string, Const_TwitterDateTemplate, new System.Globalization.CultureInfo ("en-US"));
-                columnBase.TweetText = tweet ["text"] as string;
-                columnBase.RetweetCount = (Int64)tweet ["retweet_count"];
-                columnBase.ProfileImageUrl = userInfo ["profile_image_url"] as string;
-
+                SpreadSheetColumnString columnBase = new SpreadSheetColumnString ();
+                
                 sheetDataList.Add (columnBase);
             }
 
